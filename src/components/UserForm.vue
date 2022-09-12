@@ -3,7 +3,8 @@
     <input type="text" v-model="name">
   </div>
   <div>
-    <input type="text" v-model="gender">
+    <input type="radio" value="男性" v-model="gender">男性
+    <input type="radio" value="女性" v-model="gender">女性
   </div>
   <div class="center">
     <button @click="save">保存</button>

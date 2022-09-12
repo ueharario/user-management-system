@@ -3,7 +3,7 @@
     <ul v-if="hasUsers">
       <li v-for="user in users" :key="user.id">
         <router-link :to="{name: 'edit', params: { id: user.id } }">
-          {{ user.name }}
+          {{ user.name }} / {{ user.gender }}
         </router-link>
       </li>
     </ul>
