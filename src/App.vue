@@ -1,10 +1,18 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/new">新規作成</router-link>
-  </nav>
-  <router-view/>
+  <div id="app">
+    <UserList />
+  </div>
 </template>
+
+<script>
+import UserList from '@/views/UserList.vue'
+
+export default {
+  components: {
+    UserList
+  }
+}
+</script>
 
 <style>
 #app {
