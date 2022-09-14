@@ -1,64 +1,36 @@
 <template>
-  <div>
-    <input type="text" v-model="name">
-  </div>
-  <div>
-    <input type="text" v-model="gender">
-  </div>
-  <div class="center">
-    <button @click="save">保存</button>
-    <button @click="remove" v-if="user.id">削除</button>
-  </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="card-text">
+                <div class="form-group">
+                    <input type="text" class="form-control" v-model="name">
+                </div>
+                <button @click="close">やめる</button>
+                <button @click="save">更新</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
-    name: 'UserForm',
-    props: [
-        'user'
-    ],
     data() {
         return {
-            name: this.user.name,
-            gender: this.user.gender
+            name: ''
         }
     },
     methods: {
-        save() {
-            let user = {
-                name: this.name,
-                gender: this.gender
-            }
-            if (this.user.id) {
-                user.id = this.user.id
-            }
-            this.$store.commit('save', user)
-            this.$router.push('/')
+        close() {
+            this.reset()
+            this.isShow = false
         },
-        remove() {
-            this.$store.commit('delete', this.user.id)
-            this.$router.push('/')
+        reset() {
+            this.name = ''
+        },
+        save() {
+            this.$emit('send', this.name)
+            this.close()
         }
     }
 }
 </script>
-
-<style scoped>
-div {
-    margin-bottom: 10px;
-}
-input[type=text] {
-    width: 100%;
-}
-textarea {
-    width: 100%;
-    height: 30em;
-}
-button {
-    width:5em;
-    margin: 3px;
-}
-.center {
-    text-align: center;
-}
-</style>
