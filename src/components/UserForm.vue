@@ -3,7 +3,7 @@
         <div class="card-body">
             <div class="card-text">
                 <div class="form-group">
-                    <input type="text" class="form-control" v-model="name">
+                    <input type="text" class="form-control" v-model="editName">
                 </div>
                 <button @click="close">やめる</button>
                 <button @click="save">更新</button>
@@ -14,10 +14,27 @@
 
 <script>
 export default {
+    props: {
+        name: String
+    },
     data() {
         return {
-            name: ''
+            editName: ''
         }
+    },
+    mounted() {
+        this.$watch(
+            () => this.editName,
+            (editName) => {
+                if (editName === '' ) {
+                    this.editName = this.name
+                }
+            },
+            {
+                immediate: true,
+                deep: true,
+            }
+        )
     },
     methods: {
         close() {
@@ -25,10 +42,10 @@ export default {
             this.isShow = false
         },
         reset() {
-            this.name = ''
+            this.editName = ''
         },
         save() {
-            this.$emit('send', this.name)
+            this.$emit('send', this.editName)
             this.close()
         }
     }
