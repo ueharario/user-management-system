@@ -3,7 +3,14 @@
         <div class="card-body">
             <div class="card-text">
                 <div class="form-group">
-                    <input type="text" class="form-control" v-model="editName">
+                    <input type="text" class="form-control" v-model="editUser.name">
+                </div>
+                <div class="form-group">
+                    <select class="form-group" v-model="editUser.gender">
+                        <option disabled="disabled">選択してください</option>
+                        <option>男性</option>
+                        <option>女性</option>
+                    </select>
                 </div>
                 <button @click="close">やめる</button>
                 <button @click="save">更新</button>
@@ -15,10 +22,7 @@
 <script>
 export default {
     props: {
-        name: {
-            type: String,
-            default: '名前'
-        },
+        user: Object,
         isShow: {
             type: Boolean,
             default: false
@@ -26,15 +30,19 @@ export default {
     },
     data() {
         return {
-            editName: '',
+            editUser: {
+                name: '',
+                gender: ''
+            }
         }
     },
     mounted() {
         this.$watch(
-            () => this.name,
+            () => this.user,
             (newValue, oldValue) => {
                 if (newValue !== oldValue) {
-                    this.editName = newValue
+                    this.editUser.name = newValue.name
+                    this.editUser.gender = newValue.gender
                 }
             },
             {
@@ -49,10 +57,10 @@ export default {
             this.$emit('close', false)
         },
         reset() {
-            this.editName = ''
+            this.editUser = null
         },
         save() {
-            this.$emit('send', this.editName)
+            this.$emit('send', this.editUser)
             this.close()
         }
     }
