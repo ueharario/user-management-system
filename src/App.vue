@@ -1,15 +1,43 @@
 <template>
   <div id="app">
-    <UserList />
+    <div class="home">
+      <h1>{{ title }}</h1>
+      <button class="btn btn-primary my-2" @click="create">新規作成</button>
+      <UserForm v-if="isShow" @send="createUser" />
+      <ul>
+        <li>
+        <!-- <li v-for="user in users" :key="user.id"> -->
+          {{ name }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-import UserList from '@/views/UserList.vue'
+import UserForm from '@/components/UserForm.vue'
 
 export default {
+  data() {
+    return {
+      title: 'ユーザ管理システム',
+      name: '',
+      isShow: false
+    }
+  },
   components: {
-    UserList
+    UserForm
+  },
+  methods: {
+    create() {
+      this.open()
+    },
+    open() {
+      this.isShow = true
+    },
+    createUser(name) {
+      this.name = name
+    }
   }
 }
 </script>
@@ -24,21 +52,15 @@ export default {
   margin: 0 auto;
 }
 
-h1 {
-  text-align: center;
+ul {
+  margin: 0;
+  padding: 0;
 }
 
-nav {
-  padding: 30px;
-  text-align: center;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+li {
+  list-style: none;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 </style>
