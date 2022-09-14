@@ -34,7 +34,7 @@ export default {
             () => this.name,
             (newValue, oldValue) => {
                 if (newValue !== oldValue) {
-                    this.editName = this.name
+                    this.editName = newValue
                 }
             },
             {
