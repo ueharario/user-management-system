@@ -15,8 +15,14 @@
 <script>
 export default {
     props: {
-        name: String,
-        isShow: Boolean
+        name: {
+            type: String,
+            default: '名前'
+        },
+        isShow: {
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {
@@ -25,9 +31,9 @@ export default {
     },
     mounted() {
         this.$watch(
-            () => this.editName,
-            (editName) => {
-                if (editName === '' ) {
+            () => this.name,
+            (newValue, oldValue) => {
+                if (newValue !== oldValue) {
                     this.editName = this.name
                 }
             },
