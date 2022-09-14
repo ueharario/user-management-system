@@ -3,7 +3,7 @@
     <div class="home">
       <h1>{{ title }}</h1>
       <button class="btn btn-primary my-2" @click="create">新規作成</button>
-      <UserForm v-if="isShow" @send="createUser" />
+      <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :name="name" />
       <ul>
         <li>
           {{ name }}
@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       title: 'ユーザ管理システム',
-      name: '',
+      name: 'なまえ',
       isShow: false
     }
   },
@@ -36,6 +36,9 @@ export default {
     },
     createUser(name) {
       this.name = name
+    },
+    closeUserForm(isShow) {
+      this.isShow = isShow
     }
   }
 }
