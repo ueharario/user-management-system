@@ -15,11 +15,12 @@
 <script>
 export default {
     props: {
-        name: String
+        name: String,
+        isShow: Boolean
     },
     data() {
         return {
-            editName: ''
+            editName: '',
         }
     },
     mounted() {
@@ -39,7 +40,7 @@ export default {
     methods: {
         close() {
             this.reset()
-            this.isShow = false
+            this.$emit('close', false)
         },
         reset() {
             this.editName = ''
