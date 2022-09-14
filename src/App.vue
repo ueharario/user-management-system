@@ -6,7 +6,6 @@
       <UserForm v-if="isShow" @send="createUser" />
       <ul>
         <li>
-        <!-- <li v-for="user in users" :key="user.id"> -->
           {{ name }}
         </li>
       </ul>

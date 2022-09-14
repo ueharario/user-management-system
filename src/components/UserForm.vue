@@ -5,7 +5,7 @@
                 <div class="form-group">
                     <input type="text" class="form-control" v-model="name">
                 </div>
-                <button @click="cancel">やめる</button>
+                <button @click="close">やめる</button>
                 <button @click="save">更新</button>
             </div>
         </div>
@@ -20,7 +20,7 @@ export default {
         }
     },
     methods: {
-        cancel() {
+        close() {
             this.reset()
             this.isShow = false
         },
@@ -29,7 +29,7 @@ export default {
         },
         save() {
             this.$emit('send', this.name)
-            this.cancel()
+            this.close()
         }
     }
 }
