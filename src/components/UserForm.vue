@@ -24,7 +24,7 @@ import USERS from '@/constants/USERS.js'
 
 export default {
     props: {
-        user: Object,
+        users: Array,
         isShow: {
             type: Boolean,
             default: false
@@ -41,7 +41,7 @@ export default {
     },
     mounted() {
         this.$watch(
-            () => this.user,
+            () => this.users,
             (newValue, oldValue) => {
                 if (newValue !== oldValue) {
                     this.editUser.name = newValue.name

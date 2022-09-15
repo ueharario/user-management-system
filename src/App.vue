@@ -3,10 +3,10 @@
     <div class="home">
       <h1>{{ title }}</h1>
       <button class="btn btn-primary my-2" @click="create">新規作成</button>
-      <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :user="user" />
+      <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :users="users" />
       <table class="table">
         <tbody>
-          <tr>
+          <tr v-for="user in users" :key="user.id">
             <td>
               {{ user.name }}
             </td>
@@ -28,10 +28,12 @@ export default {
   data() {
     return {
       title: 'ユーザ管理システム',
-      user: {
-        name: 'なまえ',
-        gender: USERS.GENDER.male.id
-      },
+      users: [
+        {
+          name: 'なまえ',
+          gender: USERS.GENDER.male.id
+        }
+      ],
       isShow: false,
       USERS
     }
@@ -52,7 +54,7 @@ export default {
       return gender
     },
     createUser(user) {
-      this.user = user
+      this.users.push(user)
     },
     closeUserForm(isShow) {
       this.isShow = isShow
