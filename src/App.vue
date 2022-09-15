@@ -11,7 +11,7 @@
               {{ user.name }}
             </td>
             <td>
-              {{ user.gender }}
+              {{ replaceGender(user.gender) }}
             </td>
           </tr>
         </tbody>
@@ -22,6 +22,7 @@
 
 <script>
 import UserForm from '@/components/UserForm.vue'
+import USERS from '@/constants/USERS.js'
 
 export default {
   data() {
@@ -29,9 +30,10 @@ export default {
       title: 'ユーザ管理システム',
       user: {
         name: 'なまえ',
-        gender: '男性'
+        gender: USERS.GENDER.male.id
       },
-      isShow: false
+      isShow: false,
+      USERS
     }
   },
   components: {
@@ -43,6 +45,11 @@ export default {
     },
     open() {
       this.isShow = true
+    },
+    replaceGender(gender) {
+      const targetGender = USERS.GENDER_ARRAY.find((v) => v.id === gender)
+      gender = targetGender.label
+      return gender
     },
     createUser(user) {
       this.user = user

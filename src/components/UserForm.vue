@@ -7,9 +7,9 @@
                 </div>
                 <div class="form-group">
                     <select class="form-group" v-model="editUser.gender">
-                        <option disabled="disabled">選択してください</option>
-                        <option>男性</option>
-                        <option>女性</option>
+                        <option v-for="column in USERS.GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
+                            {{ column.label }}
+                        </option>
                     </select>
                 </div>
                 <button @click="close">やめる</button>
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import USERS from '@/constants/USERS.js'
+
 export default {
     props: {
         user: Object,
@@ -32,8 +34,9 @@ export default {
         return {
             editUser: {
                 name: '',
-                gender: ''
-            }
+                gender: USERS.GENDER.male.id
+            },
+            USERS
         }
     },
     mounted() {
