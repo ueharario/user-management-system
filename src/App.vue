@@ -3,15 +3,15 @@
     <div class="home">
       <h1>{{ title }}</h1>
       <button class="btn btn-primary my-2" @click="create">新規作成</button>
-      <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :users="users" />
+      <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :user="user" />
       <table class="table">
         <tbody>
-          <tr v-for="user in users" :key="user.id">
+          <tr>
             <td>
               {{ user.name }}
             </td>
             <td>
-              {{ replaceGender(user.gender) }}
+              {{ getGenderLabel(user.gender) }}
             </td>
           </tr>
         </tbody>
@@ -28,12 +28,10 @@ export default {
   data() {
     return {
       title: 'ユーザ管理システム',
-      users: [
-        {
-          name: 'なまえ',
-          gender: USERS.GENDER.male.id
-        }
-      ],
+      user:{
+        name: 'なまえ',
+        gender: USERS.GENDER.male.id
+      },
       isShow: false,
       USERS
     }
@@ -48,13 +46,13 @@ export default {
     open() {
       this.isShow = true
     },
-    replaceGender(gender) {
+    getGenderLabel(gender) {
       const targetGender = USERS.GENDER_ARRAY.find((v) => v.id === gender)
       gender = targetGender.label
       return gender
     },
     createUser(user) {
-      this.users.push(user)
+      this.user = user
     },
     closeUserForm(isShow) {
       this.isShow = isShow
