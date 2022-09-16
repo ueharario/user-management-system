@@ -19,7 +19,7 @@
               {{ userData.name }}
             </td>
             <td>
-              {{ userData.gender }}
+              {{ genderLabel }}
             </td>
           </tr>
         </tbody>
@@ -43,6 +43,13 @@ export default {
   },
   components: {
     UserForm
+  },
+  computed: {
+    genderLabel() {
+      if (!this.userData.gender) { return }
+      const targetGender = GENDER_ARRAY.find((v) => v.id === this.userData.gender)
+      return targetGender.label
+    }
   },
   mounted() {
     fetch('..//public/json/data.json')
