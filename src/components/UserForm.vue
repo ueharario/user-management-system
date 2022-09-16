@@ -3,7 +3,14 @@
         <div class="card-body">
             <div class="card-text">
                 <div class="form-group">
-                    <input type="text" class="form-control" v-model="editName">
+                    <input type="text" class="form-control" v-model="editUser.name">
+                </div>
+                <div class="form-group">
+                    <select class="form-group" v-model="editUser.gender">
+                        <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
+                            {{ column.label }}
+                        </option>
+                    </select>
                 </div>
                 <button @click="close">やめる</button>
                 <button @click="save">更新</button>
@@ -13,12 +20,11 @@
 </template>
 
 <script>
+import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
+
 export default {
     props: {
-        name: {
-            type: String,
-            default: '名前'
-        },
+        user: Object,
         isShow: {
             type: Boolean,
             default: false
@@ -26,15 +32,17 @@ export default {
     },
     data() {
         return {
-            editName: '',
+            editUser: DEFAULT_USER,
+            GENDER_ARRAY
         }
     },
     mounted() {
         this.$watch(
-            () => this.name,
+            () => this.user,
             (newValue, oldValue) => {
                 if (newValue !== oldValue) {
-                    this.editName = newValue
+                    const { name, gender } = newValue
+                    this.editUser = { name, gender }
                 }
             },
             {
@@ -49,10 +57,10 @@ export default {
             this.$emit('close', false)
         },
         reset() {
-            this.editName = ''
+            this.editUser = DEFAULT_USER
         },
         save() {
-            this.$emit('send', this.editName)
+            this.$emit('send', this.editUser)
             this.close()
         }
     }
