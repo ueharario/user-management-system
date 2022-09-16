@@ -7,7 +7,7 @@
                 </div>
                 <div class="form-group">
                     <select class="form-group" v-model="editUser.gender">
-                        <option v-for="column in USERS.GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
+                        <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
                             {{ column.label }}
                         </option>
                     </select>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import USERS from '@/constants/USERS.js'
+import { GENDER, GENDER_ARRAY } from '@/constants/USERS.js'
 
 export default {
     props: {
@@ -34,9 +34,10 @@ export default {
         return {
             editUser: {
                 name: '',
-                gender: USERS.GENDER.male.id
+                gender: GENDER.male.id
             },
-            USERS
+            GENDER,
+            GENDER_ARRAY
         }
     },
     mounted() {
