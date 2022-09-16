@@ -19,7 +19,7 @@
               {{ userData.name }}
             </td>
             <td>
-              {{ genderLabel }}
+              {{ getGenderLabel(userData.gender) }}
             </td>
           </tr>
         </tbody>
@@ -31,6 +31,7 @@
 <script>
 import UserForm from '@/components/UserForm.vue'
 import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
+import ApiGetUserData from '@/api/api.js'
 
 export default {
   data() {
@@ -44,18 +45,22 @@ export default {
   components: {
     UserForm
   },
-  computed: {
-    genderLabel() {
-      if (!this.userData.gender) { return }
-      const targetGender = GENDER_ARRAY.find((v) => v.id === this.userData.gender)
-      return targetGender.label
-    }
-  },
+  // computed は使わない。
+  // computed: {
+  //   genderLabel() {
+  //     if (!this.userData.gender) { return }
+  //     const targetGender = GENDER_ARRAY.find((v) => v.id === this.userData.gender)
+  //     return targetGender.label
+  //   }
+  // },
   mounted() {
-    fetch('..//public/json/data.json')
-      .then(response => { return response.json() })
-      .then(json => { this.userData = json.userData })
-      .catch(error => console.log('error', error))
+    this.userData = {
+      ...DEFAULT_USER,
+      ...this.json.userData
+    }
+    ApiGetUserData( ( result ) => {
+      this.userData = result
+    })
   },
   methods: {
     create() {
