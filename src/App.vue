@@ -14,6 +14,14 @@
               {{ getGenderLabel(user.gender) }}
             </td>
           </tr>
+          <tr>
+            <td>
+              {{ userData.name }}
+            </td>
+            <td>
+              {{ userData.gender }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -29,11 +37,18 @@ export default {
     return {
       title: 'ユーザ管理システム',
       user: DEFAULT_USER,
-      isShow: false
+      userData: {},
+      isShow: false,
     }
   },
   components: {
     UserForm
+  },
+  mounted() {
+    fetch('..//public/json/data.json')
+      .then(response => { return response.json() })
+      .then(json => { this.userData = json.userData })
+      .catch(error => console.log('error', error))
   },
   methods: {
     create() {
@@ -64,17 +79,5 @@ export default {
   color: #2c3e50;
   max-width: 600px;
   margin: 0 auto;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-}
-
-li {
-  list-style: none;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
 }
 </style>
