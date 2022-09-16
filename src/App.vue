@@ -22,17 +22,14 @@
 
 <script>
 import UserForm from '@/components/UserForm.vue'
-import { GENDER, GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
+import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
 
 export default {
   data() {
     return {
       title: 'ユーザ管理システム',
       user: DEFAULT_USER,
-      isShow: false,
-      GENDER,
-      GENDER_ARRAY,
-      DEFAULT_USER
+      isShow: false
     }
   },
   components: {
