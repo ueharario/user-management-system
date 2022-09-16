@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { GENDER, GENDER_ARRAY, DEFAULT_GENDER } from '@/constants/USERS.js'
+import { GENDER, GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
 
 export default {
     props: {
@@ -32,13 +32,10 @@ export default {
     },
     data() {
         return {
-            editUser: {
-                name: '',
-                gender: DEFAULT_GENDER
-            },
+            editUser: DEFAULT_USER,
             GENDER,
             GENDER_ARRAY,
-            DEFAULT_GENDER
+            DEFAULT_USER
         }
     },
     mounted() {
@@ -62,7 +59,7 @@ export default {
             this.$emit('close', false)
         },
         reset() {
-            this.editUser = null
+            this.editUser = DEFAULT_USER
         },
         save() {
             this.$emit('send', this.editUser)

@@ -5,6 +5,9 @@ const GENDER = {
 
 const GENDER_ARRAY = Object.entries(GENDER).map((item) => item[1])
 
-const DEFAULT_GENDER = GENDER.male.id
+const DEFAULT_USER = {
+    name: 'なまえ',
+    gender: GENDER.male.id
+}
 
-export { GENDER, GENDER_ARRAY, DEFAULT_GENDER }
+export { GENDER, GENDER_ARRAY, DEFAULT_USER }
