@@ -22,7 +22,7 @@
 
 <script>
 import UserForm from '@/components/UserForm.vue'
-import { GENDER, GENDER_ARRAY } from '@/constants/USERS.js'
+import { GENDER, GENDER_ARRAY, DEFAULT_GENDER } from '@/constants/USERS.js'
 
 export default {
   data() {
@@ -30,11 +30,12 @@ export default {
       title: 'ユーザ管理システム',
       user:{
         name: 'なまえ',
-        gender: GENDER.male.id
+        gender: DEFAULT_GENDER
       },
       isShow: false,
       GENDER,
-      GENDER_ARRAY
+      GENDER_ARRAY,
+      DEFAULT_GENDER
     }
   },
   components: {
@@ -49,8 +50,7 @@ export default {
     },
     getGenderLabel(gender) {
       const targetGender = GENDER_ARRAY.find((v) => v.id === gender)
-      gender = targetGender.label
-      return gender
+      return targetGender.label
     },
     createUser(user) {
       this.user = user
