@@ -31,36 +31,36 @@
 <script>
 import UserForm from '@/components/UserForm.vue'
 import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
-import ApiGetUserData from '@/api/api.js'
+import { ApiGetUserData } from '@/api/api.js'
 
 export default {
   data() {
     return {
       title: 'ユーザ管理システム',
       user: DEFAULT_USER,
-      userData: {},
+      userData: DEFAULT_USER,
       isShow: false,
     }
   },
   components: {
     UserForm
   },
-  // computed は使わない。
-  // computed: {
-  //   genderLabel() {
-  //     if (!this.userData.gender) { return }
-  //     const targetGender = GENDER_ARRAY.find((v) => v.id === this.userData.gender)
-  //     return targetGender.label
-  //   }
-  // },
   mounted() {
-    this.userData = {
-      ...DEFAULT_USER,
-      ...this.json.userData
-    }
     ApiGetUserData( ( result ) => {
       this.userData = result
     })
+    this.userData = {
+      ...this.userData
+    }
+    this.$watch(
+      () => this.userData,
+      (newValue, oldValue) => {
+        if (newValue !== oldValue) {
+          const { name, gender } = newValue
+          this.userData = { name, gender }
+        }
+      }
+    )
   },
   methods: {
     create() {
