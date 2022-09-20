@@ -49,19 +49,6 @@ export default {
     ApiGetUserData( ( result ) => {
       this.userData = result
     })
-    this.$watch(
-      () => this.userData,
-      (newValue, oldValue) => {
-        if (newValue !== oldValue) {
-          const { name, gender } = newValue
-          this.userData = { name, gender }
-        }
-      },
-      {
-        immediate: true,
-        deep: true,
-      }
-    )
   },
   methods: {
     create() {
