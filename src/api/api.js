@@ -26,6 +26,17 @@
 // }
 
 /** JS のドキュメントを見たら、promise はこれでも良いらしい。コールバック使った時と一緒!?? */
-const ApiGetUserData = fetch('json/data.json').then(response => { return response.json() }).then(json => { return json.userData })
+// const ApiGetUserData = fetch('json/data.json').then(response => { return response.json() }).then(json => { return json.userData })
+
+/** Promise で書く。return は使わない。resolve と reject で。 */
+const ApiGetUserData = () => {
+    const promise = new Promise((resolve, reject) => {
+        fetch('/json/data.json')
+            .then(response => resolve(response.json()))
+            .then(json => resolve(json.userData))
+            .catch(error => reject('error', error))
+    })
+    return promise
+}
 
 export { ApiGetUserData }

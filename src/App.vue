@@ -47,7 +47,8 @@ export default {
   },
   /** async await の非同期処理をしないと上手く動かないので成功!?? */
   async mounted() {
-    this.userData = await ApiGetUserData
+    const _userData = await ApiGetUserData()
+    this.userData = _userData.userData
   },
   methods: {
     create() {
