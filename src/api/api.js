@@ -1,5 +1,5 @@
 const ApiGetUserData = ( callback ) => {
-    fetch('../..//public/json/data.json')
+    fetch('/json/data.json')
         .then(response => {
             return response.json()
         })
