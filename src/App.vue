@@ -14,6 +14,14 @@
               {{ getGenderLabel(user.gender) }}
             </td>
           </tr>
+          <tr>
+            <td>
+              {{ userData.name }}
+            </td>
+            <td>
+              {{ getGenderLabel(userData.gender) }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -23,17 +31,24 @@
 <script>
 import UserForm from '@/components/UserForm.vue'
 import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
+import { ApiGetUserData } from '@/api/api.js'
 
 export default {
   data() {
     return {
       title: 'ユーザ管理システム',
       user: DEFAULT_USER,
-      isShow: false
+      userData: DEFAULT_USER,
+      isShow: false,
     }
   },
   components: {
     UserForm
+  },
+  mounted() {
+    ApiGetUserData( ( result ) => {
+      this.userData = result
+    })
   },
   methods: {
     create() {
@@ -64,17 +79,5 @@ export default {
   color: #2c3e50;
   max-width: 600px;
   margin: 0 auto;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-}
-
-li {
-  list-style: none;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
 }
 </style>
