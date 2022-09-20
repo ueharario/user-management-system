@@ -45,10 +45,9 @@ export default {
   components: {
     UserForm
   },
-  mounted() {
-    ApiGetUserData( ( result ) => {
-      this.userData = result
-    })
+  /** async await の非同期処理をしないと上手く動かないので成功!?? */
+  async mounted() {
+    this.userData = await ApiGetUserData
   },
   methods: {
     create() {
