@@ -25,6 +25,8 @@ import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
 export default {
     props: {
         user: Object,
+        editIndex: Number,
+        usersData: Array,
         isShow: {
             type: Boolean,
             default: false
@@ -32,7 +34,7 @@ export default {
     },
     data() {
         return {
-            editUser: DEFAULT_USER,
+            editUser: {},
             GENDER_ARRAY
         }
     },

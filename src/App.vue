@@ -6,15 +6,15 @@
       <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :user="user" />
       <table class="table">
         <tbody>
-          <tr>
+          <!-- <tr>
             <td>
               {{ user.name }}
             </td>
             <td>
               {{ getGenderLabel(user.gender) }}
             </td>
-          </tr>
-          <tr>
+          </tr> -->
+          <tr v-for="userData in usersData" v-bind:key="userData.id" @click="edit(userData.id)">
             <td>
               {{ userData.name }}
             </td>
@@ -30,17 +30,18 @@
 
 <script>
 import UserForm from '@/components/UserForm.vue'
-import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
-import { API_STATUS, DEFAULT_API_STATUS } from '@/constants/STATUS.js'
+import { GENDER_ARRAY } from '@/constants/USERS.js'
+// import { API_STATUS, DEFAULT_API_STATUS } from '@/constants/STATUS.js'
 import { ApiGetUserData } from '@/api/api.js'
 
 export default {
   data() {
     return {
       title: 'ユーザ管理システム',
-      user: DEFAULT_USER,
-      userData: DEFAULT_USER,
-      status_code: DEFAULT_API_STATUS.status,
+      user: {},
+      editIndex: -1,
+      usersData: [],
+      // status_code: DEFAULT_API_STATUS.status,
       isShow: false,
     }
   },
@@ -55,13 +56,17 @@ export default {
     // })
 
     /** Promise を使った場合の呼び出し方 */
-    const { status_code, userData } = await ApiGetUserData()
-    if (status_code === API_STATUS.success.status && userData) {
-      this.userData = userData
-      alert(API_STATUS.success.msg)
-    } else {
-      alert(API_STATUS.error.msg)
-    }
+    // const { status_code, userData } = await ApiGetUserData()
+    // if (status_code === API_STATUS.success.status && userData) {
+    //   this.userData = userData
+    //   alert(API_STATUS.success.msg)
+    // } else {
+    //   alert(API_STATUS.error.msg)
+    // }
+
+    /** 新規作成、編集 */
+    const { usersData } = await ApiGetUserData()
+    this.usersData = usersData
   },
   methods: {
     create() {
@@ -79,6 +84,11 @@ export default {
     },
     closeUserForm(isShow) {
       this.isShow = isShow
+    },
+    edit(index) {
+      this.editIndex = index
+      this.user = this.usersData[index - 1]
+      this.open()
     }
   }
 }
