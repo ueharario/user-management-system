@@ -15,9 +15,18 @@ const ApiGetUserData = () => {
     const promise = new Promise((resolve) => {
         fetch('/json/data.json')
             .then(response => resolve(response.json()))
-            .then(json => resolve(json.userData))
+            // .then(json => resolve(json.userData))
+            // .catch((error) => { resolve(null); console.log(error) })
     })
     return promise
 }
 
-export { ApiGetUserData }
+const ApiGetStatus = () => {
+    const promise = new Promise((resolve) => {
+        fetch('/json/status.json')
+            .then(response => resolve(response.json()))
+    })
+    return promise
+}
+
+export { ApiGetUserData, ApiGetStatus }
