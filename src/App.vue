@@ -31,6 +31,7 @@
 <script>
 import UserForm from '@/components/UserForm.vue'
 import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
+import { API_STATUS, DEFAULT_API_STATUS } from '@/constants/STATUS.js'
 import { ApiGetUserData } from '@/api/api.js'
 
 export default {
@@ -39,16 +40,28 @@ export default {
       title: 'ユーザ管理システム',
       user: DEFAULT_USER,
       userData: DEFAULT_USER,
+      status_code: DEFAULT_API_STATUS.status,
       isShow: false,
     }
   },
   components: {
     UserForm
   },
-  mounted() {
-    ApiGetUserData( ( result ) => {
-      this.userData = result
-    })
+  /** async await を使う */
+  async mounted() {
+    /** callback を使った場合の呼び出し方 */
+    // ApiGetUserData( ( result ) => {
+    //   this.userData = result
+    // })
+
+    /** Promise を使った場合の呼び出し方 */
+    const { status_code, userData } = await ApiGetUserData()
+    if (status_code === API_STATUS.success.status && userData) {
+      this.userData = userData
+      alert(API_STATUS.success.msg)
+    } else {
+      alert(API_STATUS.error.msg)
+    }
   },
   methods: {
     create() {
