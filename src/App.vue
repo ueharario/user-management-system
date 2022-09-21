@@ -54,7 +54,11 @@ export default {
 
     /** Promise を使った場合の呼び出し方 */
     const _userData = await ApiGetUserData()
-    this.userData = _userData.userData
+    if (_userData) {
+      alert("成功")
+      this.userData = _userData.userData
+    }
+    else alert("エラー")
   },
   methods: {
     create() {

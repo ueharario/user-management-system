@@ -12,11 +12,10 @@
 
 /** Promise を使った場合 */
 const ApiGetUserData = () => {
-    const promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve) => {
         fetch('/json/data.json')
             .then(response => resolve(response.json()))
             .then(json => resolve(json.userData))
-            .catch(error => reject('error', error))
     })
     return promise
 }
