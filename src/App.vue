@@ -45,8 +45,14 @@ export default {
   components: {
     UserForm
   },
-  /** async await の非同期処理をしないと上手く動かないので成功!?? */
+  /** async await を使う */
   async mounted() {
+    /** callback を使った場合の呼び出し方 */
+    // ApiGetUserData( ( result ) => {
+    //   this.userData = result
+    // })
+
+    /** Promise を使った場合の呼び出し方 */
     const _userData = await ApiGetUserData()
     this.userData = _userData.userData
   },
