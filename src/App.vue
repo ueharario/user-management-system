@@ -56,11 +56,11 @@ export default {
 
     /** Promise を使った場合の呼び出し方 */
     const { status_code, userData } = await ApiGetUserData()
-    console.log({ status_code, userData })
     if (status_code === API_STATUS.success.status && userData) {
-      console.log(userData)
       this.userData = userData
-      // alert(API_STATUS.success.msg)
+      alert(API_STATUS.success.msg)
+    } else {
+      alert(API_STATUS.error.msg)
     }
   },
   methods: {

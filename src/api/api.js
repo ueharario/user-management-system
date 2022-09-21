@@ -19,7 +19,7 @@ const ApiGetUserData = () => {
             // .catch((error) => { resolve(null); console.log(error) })
 
         /** 成功の場合 */
-            fetch('json/success.json')
+        fetch('json/success.json')
             .then(response => resolve(response.json()))
 
         /** 失敗の場合 */
