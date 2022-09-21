@@ -31,8 +31,8 @@
 <script>
 import UserForm from '@/components/UserForm.vue'
 import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
-import { STATUS, DEFAULT_STATUS } from '@/constants/STATUS.js'
-import { ApiGetUserData, ApiGetStatus } from '@/api/api.js'
+import { API_STATUS, DEFAULT_API_STATUS } from '@/constants/STATUS.js'
+import { ApiGetUserData } from '@/api/api.js'
 
 export default {
   data() {
@@ -40,7 +40,7 @@ export default {
       title: 'ユーザ管理システム',
       user: DEFAULT_USER,
       userData: DEFAULT_USER,
-      status_code: DEFAULT_STATUS.status,
+      status_code: DEFAULT_API_STATUS.status,
       isShow: false,
     }
   },
@@ -55,13 +55,13 @@ export default {
     // })
 
     /** Promise を使った場合の呼び出し方 */
-    const _userData = await ApiGetUserData()
-    this.userData = _userData.userData
-    const _status = await ApiGetStatus()
-    this.status_code = _status.status_code
-    console.log(this.status_code)
-    if (this.status_code.success === STATUS.success.status) alert(STATUS.success.msg)
-    else if (this.status_code.error === STATUS.error.status) alert(STATUS.error.msg)
+    const _apiData = await ApiGetUserData()
+    this.userData = _apiData.userData
+    this.status_code = _apiData.status_code
+    if (this.status_code === API_STATUS.success.status) alert(API_STATUS.success.msg)
+    else if (this.status_code === API_STATUS.error.status) alert(API_STATUS.error.msg)
+    // if (this.status_code.success === STATUS.success.status) alert(STATUS.success.msg)
+    // else if (this.status_code.error === STATUS.error.status) alert(STATUS.error.msg)
   },
   methods: {
     create() {
