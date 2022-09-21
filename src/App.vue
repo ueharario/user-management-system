@@ -55,13 +55,13 @@ export default {
     // })
 
     /** Promise を使った場合の呼び出し方 */
-    const _apiData = await ApiGetUserData()
-    this.userData = _apiData.userData
-    this.status_code = _apiData.status_code
-    if (this.status_code === API_STATUS.success.status) alert(API_STATUS.success.msg)
-    else if (this.status_code === API_STATUS.error.status) alert(API_STATUS.error.msg)
-    // if (this.status_code.success === STATUS.success.status) alert(STATUS.success.msg)
-    // else if (this.status_code.error === STATUS.error.status) alert(STATUS.error.msg)
+    const { status_code, userData } = await ApiGetUserData()
+    console.log({ status_code, userData })
+    if (status_code === API_STATUS.success.status && userData) {
+      console.log(userData)
+      this.userData = userData
+      // alert(API_STATUS.success.msg)
+    }
   },
   methods: {
     create() {
