@@ -13,11 +13,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="userData in usersData" v-bind:key="userData.id">
-              <td>{{ userData.name }}</td>
-              <td>{{ getGenderLabel(userData.gender) }}</td>
+          <tr v-for="user in users" v-bind:key="user.id">
+              <td>{{ user.name }}</td>
+              <td>{{ getGenderLabel(user.gender) }}</td>
               <td>
-                <button class="btn btn-success" @click="edit(userData.id)">
+                <button class="btn btn-success" @click="edit(user.id)">
                   {{ TITLE.edit }}
                 </button>
               </td>
@@ -52,6 +52,7 @@ export default {
   async mounted() {
     const { usersData } = await ApiGetUserData()
     this.usersData = usersData
+    this.users = usersData
   },
   methods: {
     create() {
@@ -77,7 +78,7 @@ export default {
     /** OK! */
     edit(index) {
       this.editIndex = index -1
-      this.user = this.usersData[this.editIndex]
+      this.user = this.users[this.editIndex]
       this.open()
     }
   }
