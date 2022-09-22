@@ -45,13 +45,12 @@ export default {
         }
     },
     mounted() {
-        console.log(this.user)
         this.$watch(
             () => this.user,
             (newValue, oldValue) => {
                 if (newValue !== oldValue) {
-                    const { id, name, gender } = newValue
-                    this.editUser = { id, name, gender }
+                    const { name, gender } = newValue
+                    this.editUser = { name, gender }
                 }
             },
             {

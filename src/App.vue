@@ -3,7 +3,7 @@
     <div class="home">
       <h2>{{ TITLE.title }}</h2>
       <button class="btn btn-primary my-2" @click="create">{{ TITLE.create }}</button>
-      <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :users="users" />
+      <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :user="user" />
       <table class="table">
         <thead>
           <tr>
@@ -13,11 +13,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" v-bind:key="user.id">
-              <td>{{ user.name }}</td>
-              <td>{{ getGenderLabel(user.gender) }}</td>
+          <tr v-for="userData in usersData" v-bind:key="userData.id">
+              <td>{{ userData.name }}</td>
+              <td>{{ getGenderLabel(userData.gender) }}</td>
               <td>
-                <button class="btn btn-success" @click="edit(user.id)">
+                <button class="btn btn-success" @click="edit(userData.id)">
                   {{ TITLE.edit }}
                 </button>
               </td>
@@ -38,10 +38,10 @@ export default {
   data() {
     return {
       TITLE,
-      user:{},
+      user: {},
       users: [],
-      editIndex: DEFAULT_EDIT_INDEX,
       usersData: [],
+      editIndex: DEFAULT_EDIT_INDEX,
       isShow: false
     }
   },
@@ -51,7 +51,7 @@ export default {
   /** OK! */
   async mounted() {
     const { usersData } = await ApiGetUserData()
-    this.users = usersData
+    this.usersData = usersData
   },
   methods: {
     create() {
@@ -76,11 +76,9 @@ export default {
     },
     /** OK! */
     edit(index) {
-      this.editIndex = index - 1
-      this.user = this.users[this.editIndex]
+      this.editIndex = index -1
+      this.user = this.usersData[this.editIndex]
       this.open()
-      console.log(this.user)
-      console.log(this.editIndex)
     }
   }
 }
