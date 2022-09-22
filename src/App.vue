@@ -1,10 +1,17 @@
 <template>
   <div id="app">
     <div class="home">
-      <h1>{{ title }}</h1>
-      <button class="btn btn-primary my-2" @click="create">新規作成</button>
+      <h2>{{ TITLE.title }}</h2>
+      <button class="btn btn-primary my-2" @click="create">{{ TITLE.create }}</button>
       <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :user="user" />
       <table class="table">
+        <thead>
+          <tr>
+            <th>{{ TITLE.name }}</th>
+            <th>{{ TITLE.gender }}</th>
+            <th></th>
+          </tr>
+        </thead>
         <tbody>
           <!-- <tr>
             <td>
@@ -14,13 +21,18 @@
               {{ getGenderLabel(user.gender) }}
             </td>
           </tr> -->
-          <tr v-for="userData in usersData" v-bind:key="userData.id" @click="edit(userData.id)">
-            <td>
-              {{ userData.name }}
-            </td>
-            <td>
-              {{ getGenderLabel(userData.gender) }}
-            </td>
+          <tr v-for="userData in usersData" v-bind:key="userData.id">
+              <td>
+                {{ userData.name }}
+              </td>
+              <td>
+                {{ getGenderLabel(userData.gender) }}
+              </td>
+              <td>
+                <button class="btn btn-success" @click="edit(userData.id)">
+                  {{ TITLE.edit }}
+                </button>
+              </td>
           </tr>
         </tbody>
       </table>
@@ -30,19 +42,19 @@
 
 <script>
 import UserForm from '@/components/UserForm.vue'
-import { GENDER_ARRAY } from '@/constants/USERS.js'
+import { GENDER_ARRAY, TITLE, DEFAULT_INDEX } from '@/constants/USERS.js'
 // import { API_STATUS, DEFAULT_API_STATUS } from '@/constants/STATUS.js'
 import { ApiGetUserData } from '@/api/api.js'
 
 export default {
   data() {
     return {
-      title: 'ユーザ管理システム',
+      TITLE,
       user: {},
-      editIndex: -1,
+      editIndex: DEFAULT_INDEX,
       usersData: [],
       // status_code: DEFAULT_API_STATUS.status,
-      isShow: false,
+      isShow: false
     }
   },
   components: {
@@ -85,7 +97,7 @@ export default {
     closeUserForm(isShow) {
       this.isShow = isShow
       this.user = {}
-      this.editIndex = -1
+      this.editIndex = DEFAULT_INDEX
     },
     edit(index) {
       this.editIndex = index
