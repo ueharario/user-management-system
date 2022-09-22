@@ -12,19 +12,26 @@
                         </option>
                     </select>
                 </div>
-                <button @click="close">やめる</button>
-                <button @click="save">更新</button>
+                <button class="btn btn-secondary" @click="close">{{ TITLE.close }}</button>
+                <button class="btn btn-warning" @click="save">{{ TITLE.save }}</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
+import { GENDER_ARRAY, DEFAULT_USER, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 
 export default {
     props: {
-        user: Object,
+        user: {
+            type: Object,
+            default: DEFAULT_USER
+        },
+        editIndex: {
+            type: Number,
+            default: DEFAULT_EDIT_INDEX
+        },
         isShow: {
             type: Boolean,
             default: false
@@ -32,8 +39,9 @@ export default {
     },
     data() {
         return {
-            editUser: DEFAULT_USER,
-            GENDER_ARRAY
+            editUser: {},
+            GENDER_ARRAY,
+            TITLE
         }
     },
     mounted() {

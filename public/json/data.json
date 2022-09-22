@@ -1,6 +1,14 @@
 {
-    "userData": {
-        "name": "Lincoln",
-        "gender": 1
-    }
+    "usersData": [
+        {
+            "id": 1,
+            "name": "Lincoln",
+            "gender": 1
+        },
+        {
+            "id": 2,
+            "name": "Michelle",
+            "gender": 2
+        }
+    ]
 }
