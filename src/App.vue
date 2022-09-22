@@ -67,7 +67,7 @@ export default {
     },
     /** NG! */
     createUser(user) {
-      this.user = user
+      this.users[user.id -1] = user
     },
     /** NG! */
     closeUserForm(isShow) {

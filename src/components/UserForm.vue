@@ -49,8 +49,8 @@ export default {
             () => this.user,
             (newValue, oldValue) => {
                 if (newValue !== oldValue) {
-                    const { name, gender } = newValue
-                    this.editUser = { name, gender }
+                    const { id, name, gender } = newValue
+                    this.editUser = { id, name, gender }
                 }
             },
             {
