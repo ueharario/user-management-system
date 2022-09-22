@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { GENDER_ARRAY, DEFAULT_USER, TITLE, DEFAULT_INDEX } from '@/constants/USERS.js'
+import { GENDER_ARRAY, DEFAULT_USER, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 
 export default {
     props: {
@@ -30,7 +30,7 @@ export default {
         },
         editIndex: {
             type: Number,
-            default: DEFAULT_INDEX
+            default: DEFAULT_EDIT_INDEX
         },
         isShow: {
             type: Boolean,

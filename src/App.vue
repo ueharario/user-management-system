@@ -42,7 +42,7 @@
 
 <script>
 import UserForm from '@/components/UserForm.vue'
-import { GENDER_ARRAY, TITLE, DEFAULT_INDEX } from '@/constants/USERS.js'
+import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 // import { API_STATUS, DEFAULT_API_STATUS } from '@/constants/STATUS.js'
 import { ApiGetUserData } from '@/api/api.js'
 
@@ -51,7 +51,7 @@ export default {
     return {
       TITLE,
       user: {},
-      editIndex: DEFAULT_INDEX,
+      editIndex: DEFAULT_EDIT_INDEX,
       usersData: [],
       // status_code: DEFAULT_API_STATUS.status,
       isShow: false
@@ -97,7 +97,7 @@ export default {
     closeUserForm(isShow) {
       this.isShow = isShow
       this.user = {}
-      this.editIndex = DEFAULT_INDEX
+      this.editIndex = DEFAULT_EDIT_INDEX
     },
     edit(index) {
       this.editIndex = index
