@@ -84,6 +84,8 @@ export default {
     },
     closeUserForm(isShow) {
       this.isShow = isShow
+      this.user = {}
+      this.editIndex = -1
     },
     edit(index) {
       this.editIndex = index
