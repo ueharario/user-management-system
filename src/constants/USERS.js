@@ -6,8 +6,11 @@ const GENDER = {
 const GENDER_ARRAY = Object.entries(GENDER).map((item) => item[1])
 
 const DEFAULT_USER = {
-    name: 'Michael',
-    gender: GENDER.male.id
+    // name: 'Michael',
+    // gender: GENDER.male.id
+    id: 0,
+    name: '',
+    gender: 0
 }
 
 const TITLE = {
