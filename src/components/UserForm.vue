@@ -3,9 +3,11 @@
         <div class="card-body">
             <div class="card-text">
                 <div class="form-group">
+                    <label>{{ TITLE.name }}</label>
                     <input type="text" class="form-control" v-model="editUser.name">
                 </div>
                 <div class="form-group">
+                    <label>{{ TITLE.gender }}</label>
                     <select class="form-group" v-model="editUser.gender">
                         <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
                             {{ column.label }}

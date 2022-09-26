@@ -1,26 +1,29 @@
 <template>
   <div id="app">
-    <div class="home">
-      <h2>{{ TITLE.title }}</h2>
-      <button class="btn btn-primary my-2" @click="create">{{ TITLE.create }}</button>
+    <div class="container">
+      <h2 class="text-center">{{ TITLE.title }}</h2>
+      <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
       <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :user="user" />
-      <table class="table">
-        <thead>
+      <table class="table table-striped">
+        <thead class="thead-dark">
           <tr>
             <th>{{ TITLE.name }}</th>
             <th>{{ TITLE.gender }}</th>
+            <th></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="user in users" v-bind:key="user.id">
-              <td>{{ user.name }}</td>
-              <td>{{ getGenderLabel(user.gender) }}</td>
-              <td>
-                <button class="btn btn-success" @click="edit(user.id)">
+              <td class="col-md-5 align-middle">{{ user.name }}</td>
+              <td class="col-md-5 align-middle">{{ getGenderLabel(user.gender) }}</td>
+              <td class="col-md-1">
+                <button class="btn btn-outline-primary btn-sm" @click="edit(user.id)">
                   {{ TITLE.edit }}
                 </button>
-                <button class="btn btn-danger" @click="deleteItem(user.id)">
+              </td>
+              <td class="col-md-1">
+                <button class="btn btn-outline-danger btn-sm" @click="deleteItem(user.id)">
                   {{ TITLE.delete }}
                 </button>
               </td>
