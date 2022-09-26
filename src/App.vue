@@ -34,7 +34,6 @@ import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 import { ApiGetUserData } from '@/api/api.js'
 
 export default {
-  /** maybe! */
   data() {
     return {
       TITLE,
@@ -48,7 +47,6 @@ export default {
   components: {
     UserForm
   },
-  /** OK! */
   async mounted() {
     const { usersData } = await ApiGetUserData()
     this.usersData = usersData
@@ -56,6 +54,7 @@ export default {
   },
   methods: {
     create() {
+      this.editIndex = this.users.length + 1
       this.open()
     },
     open() {
@@ -65,18 +64,22 @@ export default {
       const targetGender = GENDER_ARRAY.find((v) => v.id === gender)
       return targetGender.label
     },
-    /** NG! */
     createUser(user) {
-      this.editIndex = user.id - 1
-      this.users[this.editIndex] = user
+      if (user.id <= this.users.length)
+      {
+        this.editIndex = user.id - 1
+        this.users[this.editIndex] = user
+      }
+      else {
+        user.id = this.editIndex
+        this.users.push(user)
+      }
     },
-    /** NG! */
     closeUserForm(isShow) {
       this.isShow = isShow
       this.user = {}
       this.editIndex = DEFAULT_EDIT_INDEX
     },
-    /** OK! */
     edit(index) {
       this.editIndex = index - 1
       this.user = this.users[this.editIndex]
