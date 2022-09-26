@@ -17,6 +17,7 @@ const TITLE = {
     title: "User-Management-System",
     create: "Create",
     edit: "Edit",
+    delete: "Delete",
     name: "Name",
     gender: "Gender",
     close: "Close",

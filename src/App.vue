@@ -20,6 +20,9 @@
                 <button class="btn btn-success" @click="edit(user.id)">
                   {{ TITLE.edit }}
                 </button>
+                <button class="btn btn-danger" @click="deleteItem(user.id)">
+                  {{ TITLE.delete }}
+                </button>
               </td>
           </tr>
         </tbody>
@@ -84,6 +87,10 @@ export default {
       this.editIndex = index - 1
       this.user = this.users[this.editIndex]
       this.open()
+    },
+    deleteItem(index) {
+      this.editIndex = index - 1
+      this.users.splice(this.editIndex, 1)
     }
   }
 }
