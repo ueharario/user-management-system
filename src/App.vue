@@ -67,7 +67,8 @@ export default {
     },
     /** NG! */
     createUser(user) {
-      this.users[user.id -1] = user
+      this.editIndex = user.id - 1
+      this.users[this.editIndex] = user
     },
     /** NG! */
     closeUserForm(isShow) {
@@ -77,7 +78,7 @@ export default {
     },
     /** OK! */
     edit(index) {
-      this.editIndex = index -1
+      this.editIndex = index - 1
       this.user = this.users[this.editIndex]
       this.open()
     }
