@@ -15,6 +15,8 @@
                         </option>
                     </select>
                     <p>{{ errors.gender }}</p>
+                    <input v-if="isMale" type="text" placeholder="Male">
+                    <input v-if="isFemale" type="text" placeholder="Female">
                 </div>
                 <button class="btn btn-secondary" @click="close">{{ TITLE.close }}</button>
                 <button class="btn btn-warning" @click="save" :disabled="!meta.valid">{{ TITLE.save }}</button>
@@ -46,6 +48,7 @@ export default {
     data() {
         return {
             editUser: {},
+            isVisible: false,
             GENDER_ARRAY,
             TITLE
         }
@@ -70,6 +73,14 @@ export default {
             gender,
             errors,
             meta
+        }
+    },
+    computed: {
+        isMale() {
+            return this.gender === 1
+        },
+        isFemale() {
+            return this.gender === 2
         }
     },
     mounted() {
