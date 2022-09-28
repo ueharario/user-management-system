@@ -3,12 +3,14 @@
         {
             "id": 1,
             "name": "Lincoln",
-            "gender": 1
+            "gender": 1,
+            "maleMessage": "2017-11-18"
         },
         {
             "id": 2,
             "name": "Michelle",
-            "gender": 2
+            "gender": 2,
+            "femaleMessage": "2019-1-27"
         }
     ]
 }

@@ -16,9 +16,9 @@
                         </option>
                     </select>
                     <p class="error">{{ errors.gender }}</p>
-                    <input v-if="isMale" type="text" placeholder="Male" v-model="male" required>
+                    <input v-if="isMale" type="text" placeholder="MaleMessage" v-model="maleMessage" required>
                     <p class="error">{{ errors.male }}</p>
-                    <input v-if="isFemale" type="text" placeholder="Female" v-model="female" required>
+                    <input v-if="isFemale" type="text" placeholder="FemaleMessage" v-model="femaleMessage" required>
                     <p class="error">{{ errors.female }}</p>
                 </div>
                 <button class="btn btn-secondary" @click="close">{{ TITLE.close }}</button>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { GENDER_ARRAY, DEFAULT_USER, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
+import { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 import { useField, useForm } from 'vee-validate';
 import { object, string } from 'yup';
 
@@ -61,8 +61,8 @@ export default {
         const schema = object({
             name: string().trim().required().min(2, 'Please enter a name of at least 2 characters.'),
             gender: string().required().matches(/^(?!gender)/, { message: 'Please select a gender.'}),
-            male: string().trim().required('Please enter.'),
-            female: string().required('Please enter.')
+            maleMessage: string().trim().required('Please enter.'),
+            femaleMessage: string().required('Please enter.')
         })
         const formValues = {
             name: DEFAULT_USER.name,
@@ -73,24 +73,23 @@ export default {
             initialValues: formValues
         })
         const { value: name } = useField('name')
-        const { value: gender, meta } = useField('gender')
-        const { value: male } = useField('male')
-        const { value: female } = useField('female')
+        const { value: gender } = useField('gender')
+        const { value: maleMessage } = useField('maleMessage')
+        const { value: femaleMessage } = useField('femaleMessage')
         return {
             name,
             gender,
             errors,
-            meta,
-            male,
-            female
+            maleMessage,
+            femaleMessage
         }
     },
     computed: {
         isMale() {
-            return this.gender === 1
+            return this.gender === GENDER.male.id
         },
         isFemale() {
-            return this.gender === 2
+            return this.gender === GENDER.female.id
         }
     },
     mounted() {
@@ -104,6 +103,8 @@ export default {
                     this.editUser.id = id
                     this.name = newValue.name
                     this.gender = newValue.gender
+                    this.maleMessage = newValue.maleMessage
+                    this.femaleMessage = newValue.femaleMessage
                 }
             },
             {
@@ -126,6 +127,8 @@ export default {
         save() {
             this.editUser.name = this.name
             this.editUser.gender = this.gender
+            this.editUser.maleMessage = this.maleMessage
+            this.editUser.femaleMessage = this.femaleMessage
             this.$emit('send', this.editUser)
             this.close()
         }
