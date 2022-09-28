@@ -2,9 +2,9 @@
   <div id="app">
     <div class="container">
       <h2 class="text-center">{{ TITLE.title }}</h2>
-      <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
       <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :user="user" />
-      <table class="table table-striped">
+      <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
+      <table class="table table-striped mt-2">
         <thead class="thead-dark">
           <tr>
             <th>{{ TITLE.name }}</th>

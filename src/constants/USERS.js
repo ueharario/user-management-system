@@ -15,6 +15,7 @@ const DEFAULT_USER = {
 
 const TITLE = {
     title: "User-Management-System",
+    card_title: "Create New",
     create: "Create",
     edit: "Edit",
     delete: "Delete",

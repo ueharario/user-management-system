@@ -1,6 +1,7 @@
 <template>
     <div class="card">
         <div class="card-body">
+            <h5 class="card-title">{{ TITLE.card_title }}</h5>
             <div class="card-text">
                 <form @submit="save">
                     <div class="form-group">
