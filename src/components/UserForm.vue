@@ -2,26 +2,28 @@
     <div class="card">
         <div class="card-body">
             <div class="card-text">
+                <form @submit="save">
                 <div class="form-group">
                     <label>{{ TITLE.name }}</label>
-                    <input type="text" class="form-control" v-model="name">
+                    <input type="text" class="form-control" v-model="name" required>
                     <p class="error">{{ errors.name }}</p>
                 </div>
                 <div class="form-group">
                     <label>{{ TITLE.gender }}</label>
-                    <select class="form-group" v-model="gender">
+                    <select class="form-group" v-model="gender" required>
                         <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
                             {{ column.label }}
                         </option>
                     </select>
                     <p class="error">{{ errors.gender }}</p>
-                    <input v-if="isMale" type="text" placeholder="Male" v-model="male">
+                    <input v-if="isMale" type="text" placeholder="Male" v-model="male" required>
                     <p class="error">{{ errors.male }}</p>
-                    <input v-if="isFemale" type="text" placeholder="Female" v-model="female">
+                    <input v-if="isFemale" type="text" placeholder="Female" v-model="female" required>
                     <p class="error">{{ errors.female }}</p>
                 </div>
                 <button class="btn btn-secondary" @click="close">{{ TITLE.close }}</button>
-                <button class="btn btn-warning" @click="save" :disabled="!meta.valid">{{ TITLE.save }}</button>
+                <button class="btn btn-warning" type="submit">{{ TITLE.save }}</button>
+                </form>
             </div>
         </div>
     </div>
