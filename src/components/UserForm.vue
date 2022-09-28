@@ -17,7 +17,7 @@
                     <p>{{ errors.gender }}</p>
                 </div>
                 <button class="btn btn-secondary" @click="close">{{ TITLE.close }}</button>
-                <button class="btn btn-warning" @click="save">{{ TITLE.save }}</button>
+                <button class="btn btn-warning" @click="save" :disabled="!meta.valid">{{ TITLE.save }}</button>
             </div>
         </div>
     </div>
@@ -52,8 +52,8 @@ export default {
     },
     setup() {
         const schema = object({
-            name: string().trim().min(2, 'Please enter a name of at least 2 characters.'),
-            gender: string().matches(/^(?!gender)/, { message: 'Please select a gender.'})
+            name: string().trim().required().min(2, 'Please enter a name of at least 2 characters.'),
+            gender: string().required().matches(/^(?!gender)/, { message: 'Please select a gender.'})
         })
         const formValues = {
             name: DEFAULT_USER.name,
@@ -64,11 +64,12 @@ export default {
             initialValues: formValues
         })
         const { value: name } = useField('name')
-        const { value: gender } = useField('gender')
+        const { value: gender, meta } = useField('gender')
         return {
             name,
             gender,
-            errors
+            errors,
+            meta
         }
     },
     mounted() {
@@ -97,6 +98,9 @@ export default {
         },
         reset() {
             this.editUser = DEFAULT_USER
+        },
+        onSubmit() {
+            this.save()
         },
         save() {
             this.editUser.name = this.name
