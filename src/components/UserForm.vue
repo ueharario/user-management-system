@@ -15,8 +15,10 @@
                         </option>
                     </select>
                     <p>{{ errors.gender }}</p>
-                    <input v-if="isMale" type="text" placeholder="Male">
-                    <input v-if="isFemale" type="text" placeholder="Female">
+                    <input v-if="isMale" type="text" placeholder="Male" v-model="male">
+                    <p>{{ errors.male }}</p>
+                    <input v-if="isFemale" type="text" placeholder="Female" v-model="female">
+                    <p>{{ errors.female }}</p>
                 </div>
                 <button class="btn btn-secondary" @click="close">{{ TITLE.close }}</button>
                 <button class="btn btn-warning" @click="save" :disabled="!meta.valid">{{ TITLE.save }}</button>
@@ -56,7 +58,9 @@ export default {
     setup() {
         const schema = object({
             name: string().trim().required().min(2, 'Please enter a name of at least 2 characters.'),
-            gender: string().required().matches(/^(?!gender)/, { message: 'Please select a gender.'})
+            gender: string().required().matches(/^(?!gender)/, { message: 'Please select a gender.'}),
+            male: string().required(),
+            female: string().required()
         })
         const formValues = {
             name: DEFAULT_USER.name,
@@ -68,11 +72,15 @@ export default {
         })
         const { value: name } = useField('name')
         const { value: gender, meta } = useField('gender')
+        const { value: male } = useField('male')
+        const { value: female } = useField('female')
         return {
             name,
             gender,
             errors,
-            meta
+            meta,
+            male,
+            female
         }
     },
     computed: {
