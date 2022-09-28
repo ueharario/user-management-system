@@ -4,15 +4,17 @@
             <div class="card-text">
                 <div class="form-group">
                     <label>{{ TITLE.name }}</label>
-                    <input type="text" class="form-control" v-model="editUser.name">
+                    <input type="text" class="form-control" v-model="name">
+                    <p>{{ errors.name }}</p>
                 </div>
                 <div class="form-group">
                     <label>{{ TITLE.gender }}</label>
-                    <select class="form-group" v-model="editUser.gender">
+                    <select class="form-group" v-model="gender">
                         <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
                             {{ column.label }}
                         </option>
                     </select>
+                    <p>{{ errors.gender }}</p>
                 </div>
                 <button class="btn btn-secondary" @click="close">{{ TITLE.close }}</button>
                 <button class="btn btn-warning" @click="save">{{ TITLE.save }}</button>
@@ -23,6 +25,8 @@
 
 <script>
 import { GENDER_ARRAY, DEFAULT_USER, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
+import { useField, useForm } from 'vee-validate';
+import { object, string } from 'yup';
 
 export default {
     props: {
@@ -46,13 +50,38 @@ export default {
             TITLE
         }
     },
+    setup() {
+        const schema = object({
+            name: string().trim().min(2, 'Please enter a name of at least 2 characters.'),
+            gender: string().matches(/^(?!gender)/, { message: 'Please select a gender.'})
+        })
+        const formValues = {
+            name: DEFAULT_USER.name,
+            gender: DEFAULT_USER.gender
+        }
+        const { errors } = useForm({
+            validationSchema: schema,
+            initialValues: formValues
+        })
+        const { value: name } = useField('name')
+        const { value: gender } = useField('gender')
+        return {
+            name,
+            gender,
+            errors
+        }
+    },
     mounted() {
         this.$watch(
             () => this.user,
             (newValue, oldValue) => {
                 if (newValue !== oldValue) {
-                    const { id, name, gender } = newValue
-                    this.editUser = { id, name, gender }
+                    // const { id, name, gender } = newValue
+                    // this.editUser = { id, name, gender }
+                    const id = newValue.id
+                    this.editUser.id = id
+                    this.name = newValue.name
+                    this.gender = newValue.gender
                 }
             },
             {
@@ -70,6 +99,8 @@ export default {
             this.editUser = DEFAULT_USER
         },
         save() {
+            this.editUser.name = this.name
+            this.editUser.gender = this.gender
             this.$emit('send', this.editUser)
             this.close()
         }
