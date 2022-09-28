@@ -3,26 +3,28 @@
         <div class="card-body">
             <div class="card-text">
                 <form @submit="save">
-                <div class="form-group">
-                    <label>{{ TITLE.name }}</label>
-                    <input type="text" class="form-control" v-model="name" required>
-                    <p class="error">{{ errors.name }}</p>
-                </div>
-                <div class="form-group">
-                    <label>{{ TITLE.gender }}</label>
-                    <select class="form-group" v-model="gender" required>
-                        <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
-                            {{ column.label }}
-                        </option>
-                    </select>
-                    <p class="error">{{ errors.gender }}</p>
-                    <input v-if="isMale" type="text" placeholder="MaleMessage" v-model="maleMessage" required>
-                    <p class="error">{{ errors.male }}</p>
-                    <input v-if="isFemale" type="text" placeholder="FemaleMessage" v-model="femaleMessage" required>
-                    <p class="error">{{ errors.female }}</p>
-                </div>
-                <button class="btn btn-secondary" @click="close">{{ TITLE.close }}</button>
-                <button class="btn btn-warning" type="submit">{{ TITLE.save }}</button>
+                    <div class="form-group">
+                        <label class="form-label">{{ TITLE.name }}</label>
+                        <input type="text" class="form-control" v-model="name" required>
+                        <p class="error form-text">{{ errors.name }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">{{ TITLE.gender }}</label>
+                        <select class="form-control" v-model="gender" required>
+                            <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
+                                {{ column.label }}
+                            </option>
+                        </select>
+                        <p class="error form-text">{{ errors.gender }}</p>
+                        <input class="form-control" v-if="isMale" type="text" placeholder="MaleMessage" v-model="maleMessage" required>
+                        <p class="error form-text">{{ errors.maleMessage }}</p>
+                        <input class="form-control" v-if="isFemale" type="text" placeholder="FemaleMessage" v-model="femaleMessage" required>
+                        <p class="error form-text">{{ errors.femaleMessage }}</p>
+                    </div>
+                    <div class="form-group float-right">
+                        <button class="btn btn-outline-secondary btn-sm my-2 mr-2" @click="close">{{ TITLE.close }}</button>
+                        <button class="btn btn-outline-warning btn-sm my-2" type="submit">{{ TITLE.save }}</button>
+                    </div>
                 </form>
             </div>
         </div>
