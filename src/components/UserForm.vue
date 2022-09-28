@@ -5,7 +5,7 @@
                 <div class="form-group">
                     <label>{{ TITLE.name }}</label>
                     <input type="text" class="form-control" v-model="name">
-                    <p>{{ errors.name }}</p>
+                    <p class="error">{{ errors.name }}</p>
                 </div>
                 <div class="form-group">
                     <label>{{ TITLE.gender }}</label>
@@ -14,11 +14,11 @@
                             {{ column.label }}
                         </option>
                     </select>
-                    <p>{{ errors.gender }}</p>
+                    <p class="error">{{ errors.gender }}</p>
                     <input v-if="isMale" type="text" placeholder="Male" v-model="male">
-                    <p>{{ errors.male }}</p>
+                    <p class="error">{{ errors.male }}</p>
                     <input v-if="isFemale" type="text" placeholder="Female" v-model="female">
-                    <p>{{ errors.female }}</p>
+                    <p class="error">{{ errors.female }}</p>
                 </div>
                 <button class="btn btn-secondary" @click="close">{{ TITLE.close }}</button>
                 <button class="btn btn-warning" @click="save" :disabled="!meta.valid">{{ TITLE.save }}</button>
@@ -59,8 +59,8 @@ export default {
         const schema = object({
             name: string().trim().required().min(2, 'Please enter a name of at least 2 characters.'),
             gender: string().required().matches(/^(?!gender)/, { message: 'Please select a gender.'}),
-            male: string().required(),
-            female: string().required()
+            male: string().trim().required('Please enter.'),
+            female: string().required('Please enter.')
         })
         const formValues = {
             name: DEFAULT_USER.name,
@@ -130,3 +130,9 @@ export default {
     }
 }
 </script>
+
+<style scope>
+.error {
+    color: red;
+}
+</style>
