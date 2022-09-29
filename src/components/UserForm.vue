@@ -18,9 +18,9 @@
                         </select>
                         <p class="error form-text">{{ errors.gender }}</p>
                         <input class="form-control" v-if="isMale" type="text" placeholder="MaleMessage" v-model="maleMessage" required>
-                        <p class="error form-text">{{ errors.maleMessage }}</p>
+                        <p class="error form-text" v-if="isMale">{{ errors.maleMessage }}</p>
                         <input class="form-control" v-if="isFemale" type="text" placeholder="FemaleMessage" v-model="femaleMessage" required>
-                        <p class="error form-text">{{ errors.femaleMessage }}</p>
+                        <p class="error form-text" v-if="isFemale">{{ errors.femaleMessage }}</p>
                     </div>
                     <div class="form-group float-right">
                         <button class="btn btn-outline-secondary btn-sm my-2 mr-2" @click="close">{{ TITLE.close }}</button>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
+import { GENDER, GENDER_ARRAY, DEFAULT_USER, DEFAULT_EDIT_INDEX, TITLE } from '@/constants/USERS.js'
 import { useField, useForm } from 'vee-validate';
 import { object, string } from 'yup';
 
@@ -55,7 +55,6 @@ export default {
     data() {
         return {
             editUser: {},
-            isVisible: false,
             GENDER_ARRAY,
             TITLE
         }
@@ -63,13 +62,15 @@ export default {
     setup() {
         const schema = object({
             name: string().trim().required().min(2, 'Please enter a name of at least 2 characters.'),
-            gender: string().required().matches(/^(?!gender)/, { message: 'Please select a gender.'}),
-            maleMessage: string().trim().required('Please enter.'),
+            gender: string().required(),
+            maleMessage: string().required('Please enter.'),
             femaleMessage: string().required('Please enter.')
         })
         const formValues = {
             name: DEFAULT_USER.name,
-            gender: DEFAULT_USER.gender
+            gender: DEFAULT_USER.gender,
+            maleMessage: DEFAULT_USER.maleMessage,
+            femaleMessage: DEFAULT_USER.femaleMessage
         }
         const { errors } = useForm({
             validationSchema: schema,
@@ -82,9 +83,9 @@ export default {
         return {
             name,
             gender,
-            errors,
             maleMessage,
-            femaleMessage
+            femaleMessage,
+            errors
         }
     },
     computed: {
@@ -100,10 +101,9 @@ export default {
             () => this.user,
             (newValue, oldValue) => {
                 if (newValue !== oldValue) {
-                    // const { id, name, gender } = newValue
-                    // this.editUser = { id, name, gender }
-                    const id = newValue.id
-                    this.editUser.id = id
+                    const { id, name, gender, maleMessage, femaleMessage } = newValue
+                    this.editUser = { id, name, gender, maleMessage, femaleMessage }
+                    this.id = newValue.id
                     this.name = newValue.name
                     this.gender = newValue.gender
                     this.maleMessage = newValue.maleMessage
@@ -128,10 +128,13 @@ export default {
             this.save()
         },
         save() {
-            this.editUser.name = this.name
-            this.editUser.gender = this.gender
-            this.editUser.maleMessage = this.maleMessage
-            this.editUser.femaleMessage = this.femaleMessage
+            this.editUser = {
+                id: this.id,
+                name: this.name,
+                gender: this.gender,
+                maleMessage: this.maleMessage,
+                femaleMessage: this.femaleMessage
+            }
             this.$emit('send', this.editUser)
             this.close()
         }

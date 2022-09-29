@@ -6,12 +6,14 @@ const GENDER = {
 const GENDER_ARRAY = Object.entries(GENDER).map((item) => item[1])
 
 const DEFAULT_USER = {
-    // name: 'Michael',
-    // gender: GENDER.male.id
     id: 0,
     name: '',
-    gender: 0
+    gender: 0,
+    maleMessage: '',
+    femaleMessage: ''
 }
+
+const DEFAULT_EDIT_INDEX = -1
 
 const TITLE = {
     title: "User-Management-System",
@@ -25,6 +27,4 @@ const TITLE = {
     save: "Save"
 }
 
-const DEFAULT_EDIT_INDEX = -1
-
-export { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE, DEFAULT_EDIT_INDEX }
+export { GENDER, GENDER_ARRAY, DEFAULT_USER, DEFAULT_EDIT_INDEX, TITLE }
