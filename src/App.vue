@@ -95,7 +95,8 @@ export default {
       this.openUserForm()
     },
     deleteItem(id) {
-      this.editIndex = id - 1
+      this.user = this.users.find((v) => v.id === id)
+      this.editIndex = this.users.indexOf(this.user)
       this.users.splice(this.editIndex, 1)
     }
   }
