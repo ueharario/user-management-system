@@ -60,11 +60,6 @@ export default {
   },
   methods: {
     create() {
-      let maxIndex = 0
-      for (let i = 0; i < this.users.length; i++) {
-        if (maxIndex < this.users[i].id) maxIndex = this.users[i].id
-      }
-      this.editIndex = maxIndex + 1
       this.openUserForm()
     },
     openUserForm() {
@@ -75,14 +70,19 @@ export default {
       return targetGender.label
     },
     updateUser(user) {
-      if ( this.editIndex === DEFAULT_EDIT_INDEX)
+      if (user.id === undefined)
       {
-        this.editIndex = user.id - 1
-        this.users.splice(this.editIndex, 1, user)
+        let maxId = 0
+        for (let i = 0; i < this.users.length; i++) {
+          if (maxId < this.users[i].id) maxId = this.users[i].id
+        }
+        user.id = maxId + 1
+        this.users.push(user)
       }
       else {
-        user.id = this.editIndex
-        this.users.push(user)
+        this.user = this.users.find((v) => user.id === v.id)
+        this.editIndex = this.users.indexOf(this.user)
+        this.users.splice(this.editIndex, 1, user)
       }
     },
     closeUserForm(isShow) {
@@ -96,8 +96,7 @@ export default {
     },
     deleteItem(id) {
       this.editIndex = id - 1
-      this.users.splice(this.editUser, 1)
-      this.editIndex = DEFAULT_EDIT_INDEX
+      this.users.splice(this.editIndex, 1)
     }
   }
 }
