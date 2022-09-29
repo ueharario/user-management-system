@@ -60,7 +60,11 @@ export default {
   },
   methods: {
     create() {
-      this.editIndex = this.users.length + 1
+      let maxIndex = 0
+      for (let i = 0; i < this.users.length; i++) {
+        if (maxIndex < this.users[i].id) maxIndex = this.users[i].id
+      }
+      this.editIndex = maxIndex + 1
       this.openUserForm()
     },
     openUserForm() {
@@ -71,7 +75,7 @@ export default {
       return targetGender.label
     },
     updateUser(user) {
-      if (user.id <= this.users.length)
+      if ( this.editIndex === DEFAULT_EDIT_INDEX)
       {
         this.editIndex = user.id - 1
         this.users.splice(this.editIndex, 1, user)
