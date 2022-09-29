@@ -3,7 +3,7 @@
     <div class="container">
       <h2 class="text-center">{{ TITLE.title }}</h2>
       <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
-      <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :user="user" />
+      <UserForm v-if="isShow" @send="updateUser" @close="closeUserForm" :user="user" />
       <table class="table table-striped">
         <thead class="thead-dark">
           <tr>
@@ -61,20 +61,20 @@ export default {
   methods: {
     create() {
       this.editIndex = this.users.length + 1
-      this.open()
+      this.openUserForm()
     },
-    open() {
+    openUserForm() {
       this.isShow = true
     },
     getGenderLabel(gender) {
       const targetGender = GENDER_ARRAY.find((v) => v.id === gender)
       return targetGender.label
     },
-    createUser(user) {
+    updateUser(user) {
       if (user.id <= this.users.length)
       {
         this.editIndex = user.id - 1
-        this.users[this.editIndex] = user
+        this.users.splice(this.editIndex, 1, user)
       }
       else {
         user.id = this.editIndex
@@ -86,14 +86,14 @@ export default {
       this.user = {}
       this.editIndex = DEFAULT_EDIT_INDEX
     },
-    edit(index) {
-      this.editIndex = index - 1
-      this.user = this.users[this.editIndex]
-      this.open()
+    edit(id) {
+      this.user = this.users.find((v) => v.id === id)
+      this.openUserForm()
     },
-    deleteItem(index) {
-      this.editIndex = index - 1
-      this.users.splice(this.editIndex, 1)
+    deleteItem(id) {
+      this.editIndex = id - 1
+      this.users.splice(this.editUser, 1)
+      this.editIndex = DEFAULT_EDIT_INDEX
     }
   }
 }
