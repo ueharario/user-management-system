@@ -8,31 +8,29 @@
                 </div>
                 <div class="form-group">
                     <label>{{ TITLE.gender }}</label>
-                    <select class="form-group" v-model="editUser.gender">
+                    <select class="form-control" v-model="editUser.gender">
                         <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
                             {{ column.label }}
                         </option>
                     </select>
                 </div>
-                <button class="btn btn-secondary" @click="close">{{ TITLE.close }}</button>
-                <button class="btn btn-warning" @click="save">{{ TITLE.save }}</button>
+                <div class="form-group float-right">
+                    <button class="btn btn-outline-secondary btn-sm my-2 mr-2" @click="close">{{ TITLE.close }}</button>
+                    <button class="btn btn-outline-warning btn-sm my-2" @click="save">{{ TITLE.save }}</button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { GENDER_ARRAY, DEFAULT_USER, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
+import { GENDER_ARRAY, DEFAULT_USER, TITLE } from '@/constants/USERS.js'
 
 export default {
     props: {
         user: {
             type: Object,
             default: DEFAULT_USER
-        },
-        editIndex: {
-            type: Number,
-            default: DEFAULT_EDIT_INDEX
         },
         isShow: {
             type: Boolean,

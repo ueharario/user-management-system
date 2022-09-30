@@ -2,9 +2,9 @@
   <div id="app">
     <div class="container">
       <h2 class="text-center">{{ TITLE.title }}</h2>
-      <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
       <UserForm v-if="isShow" @send="updateUser" @close="closeUserForm" :user="user" />
-      <table class="table table-striped">
+      <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
+      <table class="table table-striped mt-2">
         <thead class="thead-dark">
           <tr>
             <th>{{ TITLE.name }}</th>
@@ -46,7 +46,6 @@ export default {
       user: {},
       users: [],
       usersData: [],
-      editIndex: DEFAULT_EDIT_INDEX,
       isShow: false
     }
   },
@@ -55,8 +54,8 @@ export default {
   },
   async mounted() {
     const { usersData } = await ApiGetUserData()
-    this.usersData = usersData
     this.users = usersData
+    this.sortItem()
   },
   methods: {
     create() {
@@ -78,11 +77,12 @@ export default {
         }
         user.id = maxId + 1
         this.users.push(user)
+        this.sortItem()
       }
       else {
-        this.user = this.users.find((v) => user.id === v.id)
-        this.editIndex = this.users.indexOf(this.user)
-        this.users.splice(this.editIndex, 1, user)
+        this.users = this.users.filter((v) => v.id !== user.id )
+        this.users.push(user)
+        this.sortItem()
       }
     },
     closeUserForm(isShow) {
@@ -95,9 +95,11 @@ export default {
       this.openUserForm()
     },
     deleteItem(id) {
-      this.user = this.users.find((v) => v.id === id)
-      this.editIndex = this.users.indexOf(this.user)
-      this.users.splice(this.editIndex, 1)
+      this.users = this.users.filter((v) => v.id !== id )
+      this.sortItem()
+    },
+    sortItem() {
+      this.users.sort((before, after) => before.id - after.id)
     }
   }
 }
