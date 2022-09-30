@@ -40,6 +40,12 @@ import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 import { ApiGetUserData } from '@/api/api.js'
 
 export default {
+  // props: {
+  //   editFlag: {
+  //     type: Boolean,
+  //     default: false
+  //   }
+  // },
   data() {
     return {
       TITLE,
@@ -71,19 +77,20 @@ export default {
     updateUser(user) {
       if (user.id === undefined)
       {
-        let maxId = 0
-        for (let i = 0; i < this.users.length; i++) {
-          if (maxId < this.users[i].id) maxId = this.users[i].id
-        }
+        const users = [...this.users]
+        console.log(this.users)
+        console.log(users)
+        const result = users.map(usr => usr).sort((prev , nxt) => {
+          return prev.id < nxt.id ? -1 : 1
+        })
+        const maxId = result[0].id;
         user.id = maxId + 1
-        this.users.push(user)
-        this.sortItem()
       }
       else {
         this.users = this.users.filter((v) => v.id !== user.id )
-        this.users.push(user)
-        this.sortItem()
       }
+      this.users.push(user)
+      this.sortItem()
     },
     closeUserForm(isShow) {
       this.isShow = isShow

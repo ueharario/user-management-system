@@ -40,6 +40,7 @@ export default {
     data() {
         return {
             editUser: {},
+            // editFlag: true,
             GENDER_ARRAY,
             TITLE
         }
@@ -68,6 +69,7 @@ export default {
             this.editUser = DEFAULT_USER
         },
         save() {
+            // this.$emit('send', this.editFlag)
             this.$emit('send', this.editUser)
             this.close()
         }
