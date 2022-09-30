@@ -4,15 +4,25 @@
             <div class="card-text">
                 <div class="form-group">
                     <label>{{ TITLE.name }}</label>
-                    <input type="text" class="form-control" v-model="editUser.name">
+                    <input type="text" class="form-control" v-model="editUser.name" @blur="validate('name')" @keypress="validate('name')">
+                    <p class="errors form-text" v-if="!!errors.name">{{ errors.name }}</p>
                 </div>
                 <div class="form-group">
                     <label>{{ TITLE.gender }}</label>
-                    <select class="form-control" v-model="editUser.gender">
+                    <select class="form-control" v-model="editUser.gender" @blur="validate('gender')" @keypress="validate('gender')">
                         <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
                             {{ column.label }}
                         </option>
                     </select>
+                    <p class="errors form-text" v-if="!!errors.gender">{{ errors.gender }}</p>
+                </div>
+                <div class="form-group" v-if="isMale">
+                    <input class="form-control" type="text" placeholder="Male_Message" v-model="maleMsg" @blur="validate('maleMsg')" @keypress="validate('maleMsg')">
+                    <p class="errors form-text" v-if="!!errors.maleMsg">{{ errors.maleMsg }}</p>
+                </div>
+                <div class="form-group" v-if="isFemale">
+                    <input class="form-control" type="text" placeholder="Female_Message" v-model="femaleMsg" @blur="validate('femaleMsg')" @keypress="validate('femaleMsg')">
+                    <p class="errors form-text" v-if="!!errors.femaleMsg">{{ errors.femaleMsg }}</p>
                 </div>
                 <div class="form-group float-right">
                     <button class="btn btn-outline-secondary btn-sm my-2 mr-2" @click="close">{{ TITLE.close }}</button>
@@ -24,7 +34,15 @@
 </template>
 
 <script>
-import { GENDER_ARRAY, DEFAULT_USER, TITLE } from '@/constants/USERS.js'
+import { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE } from '@/constants/USERS.js'
+import * as yup from "yup";
+
+const UserSchema = yup.object().shape({
+    name: yup.string().required('Name is required.').label('Name'),
+    gender: yup.string().required('Gender is a required selection.').label('Gender'),
+    maleMsg: yup.string().required('This is a required message.').label('maleMsg'),
+    femaleMsg: yup.string().required('This is a required message.').label('femaleMsg')
+})
 
 export default {
     props: {
@@ -40,8 +58,17 @@ export default {
     data() {
         return {
             editUser: {},
+            errors: DEFAULT_USER,
             GENDER_ARRAY,
             TITLE
+        }
+    },
+    computed: {
+        isMale() {
+            return this.editUser.gender === GENDER.male.id
+        },
+        isFemale() {
+            return this.editUser.gender === GENDER.female.id
         }
     },
     mounted() {
@@ -49,8 +76,8 @@ export default {
             () => this.user,
             (newValue, oldValue) => {
                 if (newValue !== oldValue) {
-                    const { id, name, gender } = newValue
-                    this.editUser = { id, name, gender }
+                    const { id, name, gender, maleMsg, femaleMsg } = newValue
+                    this.editUser = { id, name, gender, maleMsg, femaleMsg }
                 }
             },
             {
@@ -68,9 +95,32 @@ export default {
             this.editUser = DEFAULT_USER
         },
         save() {
-            this.$emit('send', this.editUser)
-            this.close()
+            UserSchema.validate(this.editUser, { abortEarly: false })
+                .then(() => {
+                    this.$emit('send', this.editUser)
+                    this.close()
+                })
+                .catch((err) => {
+                    err.inner.forEach((error) => {
+                        this.errors = { ...this.errors, [error.path]: error.message}
+                    })
+                })
+            // this.$emit('send', this.editUser)
+            // this.close()
+        },
+        validate(field) {
+            UserSchema.validateAt(field, this.editUser)
+                .then(() => (this.errors[field] = ''))
+                .catch((err) => {
+                    this.errors[err.path] = err.message
+                })
         }
     }
 }
 </script>
+
+<style scoped>
+.errors {
+  color: red;
+}
+</style>
