@@ -77,9 +77,23 @@ export default {
     },
     newUser(user) {
       const users = [...this.users]
-      const result = users.map(usr => usr).sort((prev , nxt) => nxt.id - prev.id)
-      const maxId = result[0].id;
-      user.id = maxId + 1
+      // const result = users.map(usr => usr).sort((prev, nxt) => nxt.id - prev.id)
+      // const maxId = result[0].id;
+      // user.id = maxId + 1
+      /** 1. id を発番する */
+        const id = 1
+        const target = this.DEFAULT_USER
+        while (target === null) {
+            /** 2. 配列の中に被る id はないかを確認する */
+            this.target = users.find((v) => { return v.id === user.id})
+            /** 3. 被る場合は 1. に戻る、被らない場合は、id を返す */
+            if (target === null) return id
+            else {
+                this.target = null
+                this.id++
+            }
+        }
+        console.log(this.id)
       this.users.push(user)
       this.sortItem()
     },
