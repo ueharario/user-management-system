@@ -38,6 +38,7 @@
 import UserForm from '@/components/UserForm.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 import { ApiGetUserData } from '@/api/api.js'
+import IssueId from '@/utils/IssueId'
 
 export default {
   data() {
@@ -75,23 +76,7 @@ export default {
       else this.newUser(user)
     },
     newUser(user) {
-      // const users = [...this.users]
-      // const result = users.map(usr => usr).sort((prev, nxt) => nxt.id - prev.id)
-      // const maxId = result[0].id;
-      // user.id = maxId + 1
-      /** 1. id を発番する */
-      /** 2. 配列の中に被る id はないかを確認する */
-      /** 3. 被る場合は 1. に戻る、被らない場合は、id を返す */
-      let _id = 1
-      let duplication = true
-      while (duplication) {
-        duplication = this.users.some((v) => v.id === _id)
-        if (duplication) _id++
-        else {
-          user.id = _id
-          break
-        }
-      }
+      IssueId(this.users, user)
       this.users.push(user)
       this.sortItem()
     },
