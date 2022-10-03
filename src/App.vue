@@ -71,15 +71,29 @@ export default {
       return targetGender.label
     },
     switchMode(user) {
-      if (this.editFlag === true) this.editUser(user)
+      if (this.isEdit === true) this.editUser(user)
       else this.newUser(user)
-      console.log(this.editFlag)
     },
     newUser(user) {
-      const users = [...this.users]
-      const result = users.map(usr => usr).sort((prev , nxt) => nxt.id - prev.id)
-      const maxId = result[0].id;
-      user.id = maxId + 1
+      // const users = [...this.users]
+      // const result = users.map(usr => usr).sort((prev, nxt) => nxt.id - prev.id)
+      // const maxId = result[0].id;
+      // user.id = maxId + 1
+      /** 1. id を発番する */
+      /** 2. 配列の中に被る id はないかを確認する */
+      /** 3. 被る場合は 1. に戻る、被らない場合は、id を返す */
+      let _id = 1
+      let target = true
+      while (target) {
+        target = this.users.some((v) => v.id === _id)
+        if (target) _id++
+        else {
+          user.id = _id
+          break
+        }
+      }
+      target = this.users.some((v) => v.id === _id)
+      console.log(target)
       this.users.push(user)
       this.sortItem()
     },
