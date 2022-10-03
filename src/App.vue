@@ -78,11 +78,7 @@ export default {
       if (user.id === undefined)
       {
         const users = [...this.users]
-        console.log(this.users)
-        console.log(users)
-        const result = users.map(usr => usr).sort((prev , nxt) => {
-          return prev.id < nxt.id ? -1 : 1
-        })
+        const result = users.map(usr => usr).sort((prev , nxt) => nxt.id - prev.id)
         const maxId = result[0].id;
         user.id = maxId + 1
       }
@@ -106,7 +102,7 @@ export default {
       this.sortItem()
     },
     sortItem() {
-      this.users.sort((before, after) => before.id - after.id)
+      this.users.sort((prev, nxt) => prev.id - nxt.id)
     }
   }
 }
