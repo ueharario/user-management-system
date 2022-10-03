@@ -83,17 +83,15 @@ export default {
       /** 2. 配列の中に被る id はないかを確認する */
       /** 3. 被る場合は 1. に戻る、被らない場合は、id を返す */
       let _id = 1
-      let target = true
-      while (target) {
-        target = this.users.some((v) => v.id === _id)
-        if (target) _id++
+      let duplication = true
+      while (duplication) {
+        duplication = this.users.some((v) => v.id === _id)
+        if (duplication) _id++
         else {
           user.id = _id
           break
         }
       }
-      target = this.users.some((v) => v.id === _id)
-      console.log(target)
       this.users.push(user)
       this.sortItem()
     },
