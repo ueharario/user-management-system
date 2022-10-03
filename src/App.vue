@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container">
       <h2 class="text-center">{{ TITLE.title }}</h2>
-      <UserForm v-if="isShow" @send="updateUser" @close="closeUserForm" :user="user" />
+      <UserForm v-if="isShow" @send="switchMode" @close="closeUserForm" :user="user" />
       <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
       <table class="table table-striped mt-2">
         <thead class="thead-dark">
@@ -46,7 +46,8 @@ export default {
       user: {},
       users: [],
       usersData: [],
-      isShow: false
+      isShow: false,
+      isEdit: true
     }
   },
   components: {
@@ -59,6 +60,7 @@ export default {
   },
   methods: {
     create() {
+      this.isEdit = false
       this.openUserForm()
     },
     openUserForm() {
@@ -68,22 +70,23 @@ export default {
       const targetGender = GENDER_ARRAY.find((v) => v.id === gender)
       return targetGender.label
     },
-    updateUser(user) {
-      if (user.id === undefined)
-      {
-        let maxId = 0
-        for (let i = 0; i < this.users.length; i++) {
-          if (maxId < this.users[i].id) maxId = this.users[i].id
-        }
-        user.id = maxId + 1
-        this.users.push(user)
-        this.sortItem()
-      }
-      else {
-        this.users = this.users.filter((v) => v.id !== user.id )
-        this.users.push(user)
-        this.sortItem()
-      }
+    switchMode(user) {
+      if (this.editFlag === true) this.editUser(user)
+      else this.newUser(user)
+      console.log(this.editFlag)
+    },
+    newUser(user) {
+      const users = [...this.users]
+      const result = users.map(usr => usr).sort((prev , nxt) => nxt.id - prev.id)
+      const maxId = result[0].id;
+      user.id = maxId + 1
+      this.users.push(user)
+      this.sortItem()
+    },
+    editUser(user) {
+      this.users = this.users.filter((v) => v.id !== user.id)
+      this.users.push(user)
+      this.sortItem()
     },
     closeUserForm(isShow) {
       this.isShow = isShow
@@ -91,6 +94,7 @@ export default {
       this.editIndex = DEFAULT_EDIT_INDEX
     },
     edit(id) {
+      this.isEdit = true
       this.user = this.users.find((v) => v.id === id)
       this.openUserForm()
     },
@@ -99,7 +103,7 @@ export default {
       this.sortItem()
     },
     sortItem() {
-      this.users.sort((before, after) => before.id - after.id)
+      this.users.sort((prev, nxt) => prev.id - nxt.id)
     }
   }
 }
