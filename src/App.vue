@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container">
       <h2 class="text-center">{{ TITLE.title }}</h2>
-      <UserForm v-if="isShow" @send="updateUser" @close="closeUserForm" :user="user" />
+      <UserForm v-if="isShow" @send="switchMode" @close="closeUserForm" :user="user" />
       <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
       <table class="table table-striped mt-2">
         <thead class="thead-dark">
@@ -40,19 +40,14 @@ import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 import { ApiGetUserData } from '@/api/api.js'
 
 export default {
-  // props: {
-  //   editFlag: {
-  //     type: Boolean,
-  //     default: false
-  //   }
-  // },
   data() {
     return {
       TITLE,
       user: {},
       users: [],
       usersData: [],
-      isShow: false
+      isShow: false,
+      isEdit: true
     }
   },
   components: {
@@ -65,6 +60,7 @@ export default {
   },
   methods: {
     create() {
+      this.isEdit = false
       this.openUserForm()
     },
     openUserForm() {
@@ -74,17 +70,21 @@ export default {
       const targetGender = GENDER_ARRAY.find((v) => v.id === gender)
       return targetGender.label
     },
-    updateUser(user) {
-      if (user.id === undefined)
-      {
-        const users = [...this.users]
-        const result = users.map(usr => usr).sort((prev , nxt) => nxt.id - prev.id)
-        const maxId = result[0].id;
-        user.id = maxId + 1
-      }
-      else {
-        this.users = this.users.filter((v) => v.id !== user.id )
-      }
+    switchMode(user) {
+      if (this.editFlag === true) this.editUser(user)
+      else this.newUser(user)
+      console.log(this.editFlag)
+    },
+    newUser(user) {
+      const users = [...this.users]
+      const result = users.map(usr => usr).sort((prev , nxt) => nxt.id - prev.id)
+      const maxId = result[0].id;
+      user.id = maxId + 1
+      this.users.push(user)
+      this.sortItem()
+    },
+    editUser(user) {
+      this.users = this.users.filter((v) => v.id !== user.id)
       this.users.push(user)
       this.sortItem()
     },
@@ -94,6 +94,7 @@ export default {
       this.editIndex = DEFAULT_EDIT_INDEX
     },
     edit(id) {
+      this.isEdit = true
       this.user = this.users.find((v) => v.id === id)
       this.openUserForm()
     },
