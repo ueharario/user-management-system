@@ -38,6 +38,7 @@
 import UserForm from '@/components/UserForm.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 import { ApiGetUserData } from '@/api/api.js'
+import IssueId from '@/utils/IssueId'
 
 export default {
   data() {
@@ -71,11 +72,11 @@ export default {
       return targetGender.label
     },
     switchMode(user) {
-      if (this.editFlag === true) this.editUser(user)
+      if (this.isEdit === true) this.editUser(user)
       else this.newUser(user)
-      console.log(this.editFlag)
     },
     newUser(user) {
+      IssueId(this.users, user)
       this.users.push(user)
       this.sortItem()
     },
