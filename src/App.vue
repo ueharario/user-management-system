@@ -1,36 +1,30 @@
 <template>
   <div id="app">
-    <div class="home">
-      <h2>{{ TITLE.title }}</h2>
-      <button class="btn btn-primary my-2" @click="create">{{ TITLE.create }}</button>
-      <UserForm v-if="isShow" @send="createUser" @close="closeUserForm" :user="user" />
-      <table class="table">
-        <thead>
+    <div class="container">
+      <h2 class="text-center">{{ TITLE.title }}</h2>
+      <UserForm v-if="isShow" @new="newUser" @edit="editUser" @close="closeUserForm" :user="user" :isEdit="isEdit" />
+      <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
+      <table class="table table-striped mt-2">
+        <thead class="thead-dark">
           <tr>
             <th>{{ TITLE.name }}</th>
             <th>{{ TITLE.gender }}</th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          <!-- <tr>
-            <td>
-              {{ user.name }}
-            </td>
-            <td>
-              {{ getGenderLabel(user.gender) }}
-            </td>
-          </tr> -->
-          <tr v-for="userData in usersData" v-bind:key="userData.id">
-              <td>
-                {{ userData.name }}
-              </td>
-              <td>
-                {{ getGenderLabel(userData.gender) }}
-              </td>
-              <td>
-                <button class="btn btn-success" @click="edit(userData.id)">
+          <tr v-for="user in users" v-bind:key="user.id">
+              <td class="col-md-5 align-middle">{{ user.name }}</td>
+              <td class="col-md-5 align-middle">{{ getGenderLabel(user.gender) }}</td>
+              <td class="col-md-1">
+                <button class="btn btn-outline-primary btn-sm" @click="edit(user.id)">
                   {{ TITLE.edit }}
+                </button>
+              </td>
+              <td class="col-md-1">
+                <button class="btn btn-outline-danger btn-sm" @click="deleteItem(user.id)">
+                  {{ TITLE.delete }}
                 </button>
               </td>
           </tr>
@@ -43,66 +37,66 @@
 <script>
 import UserForm from '@/components/UserForm.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
-// import { API_STATUS, DEFAULT_API_STATUS } from '@/constants/STATUS.js'
 import { ApiGetUserData } from '@/api/api.js'
+import IssueId from '@/utils/IssueId'
 
 export default {
   data() {
     return {
       TITLE,
       user: {},
-      editIndex: DEFAULT_EDIT_INDEX,
+      users: [],
       usersData: [],
-      // status_code: DEFAULT_API_STATUS.status,
-      isShow: false
+      isShow: false,
+      isEdit: true
     }
   },
   components: {
     UserForm
   },
-  /** async await を使う */
   async mounted() {
-    /** callback を使った場合の呼び出し方 */
-    // ApiGetUserData( ( result ) => {
-    //   this.userData = result
-    // })
-
-    /** Promise を使った場合の呼び出し方 */
-    // const { status_code, userData } = await ApiGetUserData()
-    // if (status_code === API_STATUS.success.status && userData) {
-    //   this.userData = userData
-    //   alert(API_STATUS.success.msg)
-    // } else {
-    //   alert(API_STATUS.error.msg)
-    // }
-
-    /** 新規作成、編集 */
     const { usersData } = await ApiGetUserData()
-    this.usersData = usersData
+    this.users = usersData
+    this.sortItem()
   },
   methods: {
     create() {
-      this.open()
+      this.isEdit = false
+      this.openUserForm()
     },
-    open() {
+    openUserForm() {
       this.isShow = true
     },
     getGenderLabel(gender) {
       const targetGender = GENDER_ARRAY.find((v) => v.id === gender)
       return targetGender.label
     },
-    createUser(user) {
-      this.user = user
+    newUser(user) {
+      user.id = IssueId(this.users, user)
+      this.users.push(user)
+      this.sortItem()
+    },
+    editUser(user) {
+      this.users = this.users.filter((v) => v.id !== user.id)
+      this.users.push(user)
+      this.sortItem()
     },
     closeUserForm(isShow) {
       this.isShow = isShow
       this.user = {}
       this.editIndex = DEFAULT_EDIT_INDEX
     },
-    edit(index) {
-      this.editIndex = index
-      this.user = this.usersData[index - 1]
-      this.open()
+    edit(id) {
+      this.isEdit = true
+      this.user = this.users.find((v) => v.id === id)
+      this.openUserForm()
+    },
+    deleteItem(id) {
+      this.users = this.users.filter((v) => v.id !== id )
+      this.sortItem()
+    },
+    sortItem() {
+      this.users.sort((prev, nxt) => prev.id - nxt.id)
     }
   }
 }
