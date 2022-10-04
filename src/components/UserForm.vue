@@ -4,12 +4,12 @@
             <div class="card-text">
                 <div class="form-group">
                     <label>{{ TITLE.name }}</label>
-                    <input type="text" class="form-control" v-model="editUser.name" @blur="validate('name')" @keypress="validate('name')">
+                    <input type="text" class="form-control" v-model="editUser.name">
                     <p class="errors form-text" v-if="!!errors.name">{{ errors.name }}</p>
                 </div>
                 <div class="form-group">
                     <label>{{ TITLE.gender }}</label>
-                    <select class="form-control" v-model="editUser.gender" @blur="validate('gender')" @keypress="validate('gender')">
+                    <select class="form-control" v-model="editUser.gender">
                         <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
                             {{ column.label }}
                         </option>
@@ -17,11 +17,11 @@
                     <p class="errors form-text" v-if="!!errors.gender">{{ errors.gender }}</p>
                 </div>
                 <div class="form-group" v-if="isMale">
-                    <input class="form-control" type="text" placeholder="Male_Message" v-model="maleMsg" @blur="validate('maleMsg')" @keypress="validate('maleMsg')">
+                    <input class="form-control" type="text" placeholder="Male_Message" v-model="editUser.maleMsg">
                     <p class="errors form-text" v-if="!!errors.maleMsg">{{ errors.maleMsg }}</p>
                 </div>
                 <div class="form-group" v-if="isFemale">
-                    <input class="form-control" type="text" placeholder="Female_Message" v-model="femaleMsg" @blur="validate('femaleMsg')" @keypress="validate('femaleMsg')">
+                    <input class="form-control" type="text" placeholder="Female_Message" v-model="editUser.femaleMsg">
                     <p class="errors form-text" v-if="!!errors.femaleMsg">{{ errors.femaleMsg }}</p>
                 </div>
                 <div class="form-group float-right">
@@ -38,10 +38,10 @@ import { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE } from '@/constants/USERS.js'
 import * as yup from "yup";
 
 const UserSchema = yup.object().shape({
-    name: yup.string().required('Name is required.').label('Name'),
-    gender: yup.string().required('Gender is a required selection.').label('Gender'),
-    maleMsg: yup.string().required('This is a required message.').label('maleMsg'),
-    femaleMsg: yup.string().required('This is a required message.').label('femaleMsg')
+    name: yup.string().required('Name is required.'),
+    gender: yup.string().required('Gender is a required selection.'),
+    maleMsg: yup.string().required('This is a required message.'),
+    femaleMsg: yup.string().required('This is a required message.')
 })
 
 export default {
@@ -97,16 +97,16 @@ export default {
         save() {
             UserSchema.validate(this.editUser, { abortEarly: false })
                 .then(() => {
+                    console.log("clear")
                     this.$emit('send', this.editUser)
                     this.close()
                 })
                 .catch((err) => {
+                    console.log("error")
                     err.inner.forEach((error) => {
                         this.errors = { ...this.errors, [error.path]: error.message}
                     })
                 })
-            // this.$emit('send', this.editUser)
-            // this.close()
         },
         validate(field) {
             UserSchema.validateAt(field, this.editUser)
