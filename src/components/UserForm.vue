@@ -16,7 +16,8 @@
                 </div>
                 <div class="form-group float-right">
                     <button class="btn btn-outline-secondary btn-sm my-2 mr-2" @click="close">{{ TITLE.close }}</button>
-                    <button class="btn btn-outline-warning btn-sm my-2" @click="save">{{ TITLE.save }}</button>
+                    <button class="btn btn-outline-warning btn-sm my-2" @click="update" v-if="isEdit">{{ TITLE.update }}</button>
+                    <button class="btn btn-outline-warning btn-sm my-2" @click="register" v-else>{{ TITLE.register }}</button>
                 </div>
             </div>
         </div>
@@ -33,6 +34,10 @@ export default {
             default: DEFAULT_USER
         },
         isShow: {
+            type: Boolean,
+            default: false
+        },
+        isEdit: {
             type: Boolean,
             default: false
         }
@@ -55,7 +60,7 @@ export default {
             },
             {
                 immediate: true,
-                deep: true,
+                deep: true
             }
         )
     },
@@ -67,8 +72,12 @@ export default {
         reset() {
             this.editUser = DEFAULT_USER
         },
-        save() {
-            this.$emit('send', this.editUser)
+        update() {
+            this.$emit('edit', this.editUser)
+            this.close()
+        },
+        register() {
+            this.$emit('new', this.editUser)
             this.close()
         }
     }

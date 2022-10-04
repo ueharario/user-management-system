@@ -19,7 +19,8 @@ const TITLE = {
     name: "Name",
     gender: "Gender",
     close: "Close",
-    save: "Save"
+    update: "Update",
+    register: "Register"
 }
 
 export { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE }
