@@ -1,13 +1,11 @@
 const issueId = (users, user) => {
-    let _id = 1
-    let duplication = true
-    while (duplication) {
-        duplication = users.some((v) => v.id === _id)
-        if (duplication) _id++
-        else {
+    let _id = Math.floor(Math.random() * 100) + 1
+    let duplication = users.some((v) => v.id === _id)
+    if (duplication) {
+        issueId(users, user)
+    }
+    else {
         user.id = _id
-        break
-        }
     }
 }
 
