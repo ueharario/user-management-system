@@ -40,8 +40,14 @@ import * as yup from "yup";
 const UserSchema = yup.object().shape({
     name: yup.string().required('Name is required.'),
     gender: yup.string().required('Gender is a required selection.'),
-    maleMsg: yup.string().required('This is a required message.'),
-    femaleMsg: yup.string().required('This is a required message.')
+    maleMsg: yup.string().when("gender", {
+        is: 1 ,
+        then: yup.string().required('This is a required message.')
+    }),
+    femaleMsg: yup.string().when('gender', {
+        is: 2,
+        then: yup.string().required('This is a required message.')
+    })
 })
 
 export default {
