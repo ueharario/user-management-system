@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container">
       <h2 class="text-center">{{ TITLE.title }}</h2>
-      <UserForm v-if="isShow" @send="switchMode" @close="closeUserForm" :user="user" />
+      <UserForm v-if="isShow" @new="newUser" @edit="editUser" @close="closeUserForm" :user="user" :isEdit="isEdit" />
       <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
       <table class="table table-striped mt-2">
         <thead class="thead-dark">
@@ -70,10 +70,6 @@ export default {
     getGenderLabel(gender) {
       const targetGender = GENDER_ARRAY.find((v) => v.id === gender)
       return targetGender.label
-    },
-    switchMode(user) {
-      if (this.isEdit === true) this.editUser(user)
-      else this.newUser(user)
     },
     newUser(user) {
       user.id = IssueId(this.users, user)
