@@ -4,12 +4,12 @@
             <div class="card-text">
                 <div class="form-group">
                     <label>{{ TITLE.name }}</label>
-                    <input type="text" class="form-control" v-model="editUser.name">
+                    <input type="text" class="form-control" v-model="editUser.name" @blur="validate('name')">
                     <p class="errors form-text" v-if="!!errors.name">{{ errors.name }}</p>
                 </div>
                 <div class="form-group">
                     <label>{{ TITLE.gender }}</label>
-                    <select class="form-control" v-model="editUser.gender">
+                    <select class="form-control" v-model="editUser.gender" @blur="validate('gender')">
                         <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
                             {{ column.label }}
                         </option>
@@ -17,11 +17,11 @@
                     <p class="errors form-text" v-if="!!errors.gender">{{ errors.gender }}</p>
                 </div>
                 <div class="form-group" v-if="isMale">
-                    <input class="form-control" type="text" placeholder="Male_Message" v-model="editUser.maleMsg">
+                    <input class="form-control" type="text" placeholder="Male_Message" v-model="editUser.maleMsg" @blur="validate('maleMsg')">
                     <p class="errors form-text" v-if="!!errors.maleMsg">{{ errors.maleMsg }}</p>
                 </div>
                 <div class="form-group" v-if="isFemale">
-                    <input class="form-control" type="text" placeholder="Female_Message" v-model="editUser.femaleMsg">
+                    <input class="form-control" type="text" placeholder="Female_Message" v-model="editUser.femaleMsg" @blur="validate('femaleMsg')">
                     <p class="errors form-text" v-if="!!errors.femaleMsg">{{ errors.femaleMsg }}</p>
                 </div>
                 <div class="form-group float-right">
@@ -40,7 +40,7 @@ import * as yup from "yup";
 
 const UserSchema = yup.object().shape({
     name: yup.string().required('Name is required.'),
-    gender: yup.string().required('Gender is a required selection.'),
+    gender: yup.number().required('Gender is a required selection.'),
     maleMsg: yup.string().when("gender", {
         is: 1 ,
         then: yup.string().required('This is a required message.')
@@ -108,12 +108,10 @@ export default {
         update() {
             UserSchema.validate(this.editUser, { abortEarly: false })
             .then(() => {
-                console.log("clear")
                 this.$emit('edit', this.editUser)
                 this.close()
             })
             .catch((err) => {
-                console.log("error")
                 err.inner.forEach((error) => {
                     this.errors = { ...this.errors, [error.path]: error.message}
                 })
