@@ -77,6 +77,7 @@ export default {
     },
     newUser(user) {
       IssueId(this.users, user)
+      console.log(user)
       this.users.push(user)
       this.sortItem()
     },
