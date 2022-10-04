@@ -76,7 +76,7 @@ export default {
       else this.newUser(user)
     },
     newUser(user) {
-      IssueId(this.users, user)
+      user.id = IssueId(this.users, user)
       this.users.push(user)
       this.sortItem()
     },

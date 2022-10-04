@@ -1,11 +1,10 @@
 const issueId = (users, user) => {
-    let _id = Math.floor(Math.random() * 100) + 1
-    let duplication = users.some((v) => v.id === _id)
-    if (duplication) {
-        issueId(users, user)
+    const _id = Math.floor(Math.random() * 100) + 1
+    if (users.some((v) => v.id === _id)) {
+        return issueId(users, user)
     }
     else {
-        user.id = _id
+        return _id
     }
 }
 
