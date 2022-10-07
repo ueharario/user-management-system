@@ -1,5 +1,5 @@
 <template>
-    <select class="form-control" :value="modelValue" @change="updateValue">
+    <select class="form-control" v-model="modelValue">
         <option disabled value="">Please select.</option>
         <option v-for="key in options" :key="key.id" :value="key.id">
             {{ key.label }}
@@ -12,7 +12,7 @@ import { GENDER_ARRAY } from '@/constants/USERS.js'
 
 export default {
     props: {
-        modelValue: {
+        value: {
             type: Number,
             default: 0
         },
@@ -26,9 +26,19 @@ export default {
             GENDER_ARRAY
         }
     },
+    computed: {
+        val: {
+            get() {
+                return this.value
+            },
+            set(val) {
+                this.updateValue({ val })
+            }
+        }
+    },
     methods: {
-        updateValue(event) {
-            this.$emit('update:modelValue', event.target.value)
+        updateValue(diff) {
+            this.$emit('input', { ...this.value, ...diff })
         }
     }
 }
