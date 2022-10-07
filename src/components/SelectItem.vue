@@ -1,0 +1,35 @@
+<template>
+    <select class="form-control" :value="modelValue" @change="updateValue">
+        <option disabled value="">Please select.</option>
+        <option v-for="key in options" :key="key.id" :value="key.id">
+            {{ key.label }}
+        </option>
+    </select>
+</template>
+
+<script>
+import { GENDER_ARRAY } from '@/constants/USERS.js'
+
+export default {
+    props: {
+        modelValue: {
+            type: Number,
+            default: 0
+        },
+        options: {
+            type: Object,
+            default: () => {}
+        }
+    },
+    data() {
+        return {
+            GENDER_ARRAY
+        }
+    },
+    methods: {
+        updateValue(event) {
+            this.$emit('update:modelValue', event.target.value)
+        }
+    }
+}
+</script>

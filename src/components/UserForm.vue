@@ -2,26 +2,22 @@
     <div class="card">
         <div class="card-body">
             <div class="card-text">
-                <div class="form-group">
+                <div class="group-form">
                     <label>{{ TITLE.name }}</label>
-                    <input type="text" class="form-control" v-model="editUser.name" @blur="validate('name')">
+                    <InputText v-model="editUser.name" @blur="validate('name')" />
                     <p class="errors form-text" v-if="!!errors.name">{{ errors.name }}</p>
                 </div>
                 <div class="form-group">
                     <label>{{ TITLE.gender }}</label>
-                    <select class="form-control" v-model="editUser.gender" @blur="validate('gender')">
-                        <option v-for="column in GENDER_ARRAY" v-bind:key="column.id" :value="column.id">
-                            {{ column.label }}
-                        </option>
-                    </select>
+                    <SelectItem v-model="editUser.gender" :options="GENDER_ARRAY" @blur="validate('gender')" />
                     <p class="errors form-text" v-if="!!errors.gender">{{ errors.gender }}</p>
                 </div>
                 <div class="form-group" v-if="isMale">
-                    <input class="form-control" type="text" placeholder="Male_Message" v-model="editUser.maleMsg" @blur="validate('maleMsg')">
+                    <InputText placeholder="Male_Message" v-model="editUser.maleMsg" @blur="validate('maleMsg')" />
                     <p class="errors form-text" v-if="!!errors.maleMsg">{{ errors.maleMsg }}</p>
                 </div>
                 <div class="form-group" v-if="isFemale">
-                    <input class="form-control" type="text" placeholder="Female_Message" v-model="editUser.femaleMsg" @blur="validate('femaleMsg')">
+                    <InputText placeholder="Female_Message" v-model="editUser.femaleMsg" @blur="validate('femaleMsg')" />
                     <p class="errors form-text" v-if="!!errors.femaleMsg">{{ errors.femaleMsg }}</p>
                 </div>
                 <div class="form-group float-right">
@@ -35,6 +31,8 @@
 </template>
 
 <script>
+import InputText from '@/components/InputText.vue'
+import SelectItem from '@/components/SelectItem.vue'
 import { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE } from '@/constants/USERS.js'
 import * as yup from "yup";
 
@@ -74,19 +72,23 @@ export default {
             TITLE
         }
     },
+    components: {
+        InputText,
+        SelectItem
+    },
     computed: {
         isMale() {
-            return this.editUser.gender === GENDER.male.id
+            return Number(this.editUser.gender) === GENDER.male.id
         },
         isFemale() {
-            return this.editUser.gender === GENDER.female.id
+            return Number(this.editUser.gender) === GENDER.female.id
         }
     },
     mounted() {
         this.$watch(
             () => this.user,
             (newValue, oldValue) => {
-                if (newValue !== oldValue) {
+                if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
                     const { id, name, gender, maleMsg, femaleMsg } = newValue
                     this.editUser = { id, name, gender, maleMsg, femaleMsg }
                 }
