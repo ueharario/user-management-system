@@ -88,7 +88,7 @@ export default {
         this.$watch(
             () => this.user,
             (newValue, oldValue) => {
-                if (newValue !== oldValue) {
+                if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
                     const { id, name, gender, maleMsg, femaleMsg } = newValue
                     this.editUser = { id, name, gender, maleMsg, femaleMsg }
                 }

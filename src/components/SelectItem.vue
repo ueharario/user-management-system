@@ -14,12 +14,10 @@ export default {
     props: {
         modelValue: {
             type: Number,
-            required: true,
             default: 0
         },
         options: {
             type: Object,
-            required: false,
             default: () => {}
         }
     },
