@@ -15,7 +15,7 @@ export default {
         modelValue: {
             type: Number,
             required: true,
-            default: null
+            default: 0
         },
         options: {
             type: Object,
@@ -23,9 +23,10 @@ export default {
             default: () => {}
         }
     },
-    emits: ['update:modelValue'],
     data() {
-        GENDER_ARRAY
+        return {
+            GENDER_ARRAY
+        }
     },
     methods: {
         updateValue(event) {

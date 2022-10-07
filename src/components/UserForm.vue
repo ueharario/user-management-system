@@ -4,21 +4,20 @@
             <div class="card-text">
                 <div class="group-form">
                     <label>{{ TITLE.name }}</label>
-                    <InputText :model-value="editUser.name" @update:model-value="editUser.name = $event" @blur="validate('name')" />
+                    <InputText v-model="editUser.name" @blur="validate('name')" />
                     <p class="errors form-text" v-if="!!errors.name">{{ errors.name }}</p>
                 </div>
                 <div class="form-group">
                     <label>{{ TITLE.gender }}</label>
-                    <SelectItem :model-value="editUser.gender" @update:model-value="editUser.gender = $event"
-                                :options="GENDER_ARRAY" @blur="validate('gender')" />
+                    <SelectItem v-model="editUser.gender" :options="GENDER_ARRAY" @blur="validate('gender')" />
                     <p class="errors form-text" v-if="!!errors.gender">{{ errors.gender }}</p>
                 </div>
                 <div class="form-group" v-if="isMale">
-                    <InputText placeholder="Male_Message" :model-value="editUser.maleMsg" @update:model-value="editUser.maleMsg = $event" @blur="validate('maleMsg')" />
+                    <InputText placeholder="Male_Message" v-model="editUser.maleMsg" @blur="validate('maleMsg')" />
                     <p class="errors form-text" v-if="!!errors.maleMsg">{{ errors.maleMsg }}</p>
                 </div>
                 <div class="form-group" v-if="isFemale">
-                    <InputText placeholder="Female_Message" :model-value="editUser.femaleMsg" @update:model-value="editUser.femaleMsg = $event" @blur="validate('femaleMsg')" />
+                    <InputText placeholder="Female_Message" v-model="editUser.gender" @blur="validate('femaleMsg')" />
                     <p class="errors form-text" v-if="!!errors.femaleMsg">{{ errors.femaleMsg }}</p>
                 </div>
                 <div class="form-group float-right">
@@ -79,10 +78,10 @@ export default {
     },
     computed: {
         isMale() {
-            return this.editUser.gender == GENDER.male.id
+            return Number(this.editUser.gender) === GENDER.male.id
         },
         isFemale() {
-            return this.editUser.gender == GENDER.female.id
+            return Number(this.editUser.gender) === GENDER.female.id
         }
     },
     mounted() {
