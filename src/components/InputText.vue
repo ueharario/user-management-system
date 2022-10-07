@@ -2,16 +2,15 @@
     <input
         class="form-control"
         type="text"
-        :value="modelValue"
+        v-model="modelValue"
         :placeholder="placeholder"
-        @input="updateValue"
     />
 </template>
 
 <script>
 export default {
     props: {
-        modelValue: {
+        value: {
             type: String,
             default: ''
         },
@@ -20,9 +19,19 @@ export default {
             default: ''
         }
     },
+    computed: {
+        val: {
+            get() {
+                return this.value
+            },
+            set(val) {
+                this.updateValue({ val })
+            }
+        }
+    },
     methods: {
-        updateValue(event) {
-            this.$emit('update:modelValue', event.target.value)
+        updateValue(diff) {
+            this.$emit('input', { ...this.value, ...diff })
         }
     }
 }
