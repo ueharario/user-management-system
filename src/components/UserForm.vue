@@ -17,7 +17,7 @@
                     <p class="errors form-text" v-if="!!errors.maleMsg">{{ errors.maleMsg }}</p>
                 </div>
                 <div class="form-group" v-if="isFemale">
-                    <InputText placeholder="Female_Message" v-model="editUser.gender" @blur="validate('femaleMsg')" />
+                    <InputText placeholder="Female_Message" v-model="editUser.femaleMsg" @blur="validate('femaleMsg')" />
                     <p class="errors form-text" v-if="!!errors.femaleMsg">{{ errors.femaleMsg }}</p>
                 </div>
                 <div class="form-group float-right">
