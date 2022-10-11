@@ -122,12 +122,10 @@ export default {
         register() {
             UserSchema.validate(this.editUser, { abortEarly: false })
             .then(() => {
-                console.log("clear")
                 this.$emit('new', this.editUser)
                 this.close()
             })
             .catch((err) => {
-                console.log("error")
                 err.inner.forEach((error) => {
                     this.errors = { ...this.errors, [error.path]: error.message}
                 })
