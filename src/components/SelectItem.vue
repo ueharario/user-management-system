@@ -8,13 +8,12 @@
 </template>
 
 <script>
-import { GENDER_ARRAY } from '@/constants/USERS.js'
-
+import { GENDER_ARRAY, DEFAULT_USER } from '@/constants/USERS.js'
 export default {
     props: {
         modelValue: {
             type: Number,
-            default: 0
+            default: DEFAULT_USER.id
         },
         options: {
             type: Object,
@@ -28,7 +27,7 @@ export default {
     },
     methods: {
         updateValue(event) {
-            this.$emit('update:modelValue', event.target.value)
+            this.$emit('update:modelValue', Number(event.target.value))
         }
     }
 }
