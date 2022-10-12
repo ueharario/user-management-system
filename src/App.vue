@@ -39,8 +39,8 @@
           </div>
         </div>
       </div>
-      <button @click="someProcess">Process</button>
-      <p>{{ userChoice }}</p>
+      <button class="btn btn-outline-success mr-2" @click="someProcess">Process</button>
+      <span>{{ userChoice }}</span>
     </div>
   </div>
 </template>
