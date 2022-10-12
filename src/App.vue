@@ -30,7 +30,15 @@
           </tr>
         </tbody>
       </table>
-      <ConfirmDialog message="Confirmation" />
+      <div id="overlay" v-if="isOpenPopupDialog">
+        <div id="content">
+          <p class="message">{{ message }}</p>
+          <div class="btn-container float-right">
+            <button class="btn btn-outline-primary btn-sm my-2 mr-2" @click="ok()">Yes</button>
+            <button class="btn btn-outline-danger btn-sm my-2" @click="cancel()">No</button>
+          </div>
+        </div>
+      </div>
       <button @click="someProcess">Process</button>
       <p>{{ userChoice }}</p>
     </div>
@@ -42,7 +50,6 @@ import UserForm from '@/components/UserForm.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 import { ApiGetUserData } from '@/api/api.js'
 import IssueId from '@/utils/IssueId'
-import ConfirmDialog from '@/components/ConfirmDialog.vue'
 
 export default {
   data() {
@@ -53,12 +60,14 @@ export default {
       usersData: [],
       isShow: false,
       isEdit: true,
+      message: 'Confirmation',
+      isOpenPopupDialog: false,
+      resolve: {},
       userChoice: 'false'
     }
   },
   components: {
-    UserForm,
-    ConfirmDialog
+    UserForm
   },
   async mounted() {
     const { usersData } = await ApiGetUserData()
@@ -105,8 +114,23 @@ export default {
       this.users.sort((prev, nxt) => prev.id - nxt.id)
     },
     async someProcess() {
-      const answer = await confirm()
+      this.isOpenPopupDialog = true
+      const answer = await new Promise((resolve) => {
+        this.resolve = resolve
+      })
       this.userChoice = answer
+      this.close()
+    },
+    close() {
+      this.isOpenPopupDialog = false
+    },
+    ok() {
+      this.resolve(true)
+      this.close()
+    },
+    cancel() {
+      this.resolve(false)
+      this.close()
     }
   }
 }
@@ -120,5 +144,27 @@ export default {
   color: #2c3e50;
   max-width: 600px;
   margin: 0 auto;
+}
+
+#overlay{
+  z-index:1;
+
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:rgba(0,0,0,0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#content{
+  z-index:2;
+  width:50%;
+  padding: 1em;
+  background:#fff;
 }
 </style>
