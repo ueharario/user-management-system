@@ -34,8 +34,8 @@
         <div id="content">
           <p class="message">{{ message }}</p>
           <div class="btn-container float-right">
-            <button class="btn btn-outline-primary btn-sm my-2 mr-2" @click="ok()">Yes</button>
-            <button class="btn btn-outline-danger btn-sm my-2" @click="cancel()">No</button>
+            <button class="btn btn-outline-primary btn-sm my-2 mr-2" @click="successConfirm">Yes</button>
+            <button class="btn btn-outline-danger btn-sm my-2" @click="cancelConfirm">No</button>
           </div>
         </div>
       </div>
@@ -63,7 +63,7 @@ export default {
       message: 'Confirmation',
       isOpenPopupDialog: false,
       resolve: {},
-      userChoice: 'false'
+      userChoice: false
     }
   },
   components: {
@@ -121,16 +121,16 @@ export default {
       this.userChoice = answer
       this.close()
     },
-    close() {
+    closePopupDialog() {
       this.isOpenPopupDialog = false
     },
-    ok() {
+    successConfirm() {
       this.resolve(true)
-      this.close()
+      this.closePopupDialog()
     },
-    cancel() {
+    cancelConfirm() {
       this.resolve(false)
-      this.close()
+      this.closePopupDialog()
     }
   }
 }
