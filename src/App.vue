@@ -30,6 +30,9 @@
           </tr>
         </tbody>
       </table>
+      <ConfirmDialog message="Confirmation" />
+      <button @click="someProcess">Process</button>
+      <p>{{ userChoice }}</p>
     </div>
   </div>
 </template>
@@ -39,6 +42,7 @@ import UserForm from '@/components/UserForm.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 import { ApiGetUserData } from '@/api/api.js'
 import IssueId from '@/utils/IssueId'
+import ConfirmDialog from '@/components/ConfirmDialog.vue'
 
 export default {
   data() {
@@ -48,11 +52,13 @@ export default {
       users: [],
       usersData: [],
       isShow: false,
-      isEdit: true
+      isEdit: true,
+      userChoice: 'false'
     }
   },
   components: {
-    UserForm
+    UserForm,
+    ConfirmDialog
   },
   async mounted() {
     const { usersData } = await ApiGetUserData()
@@ -97,6 +103,10 @@ export default {
     },
     sortItem() {
       this.users.sort((prev, nxt) => prev.id - nxt.id)
+    },
+    async someProcess() {
+      const answer = await confirm()
+      this.userChoice = answer
     }
   }
 }
