@@ -13,10 +13,6 @@ export default {
         editUser: {
             type: Object,
             default: () => {}
-        },
-        placeholder: {
-            type: String,
-            default: ''
         }
     },
     computed: {
