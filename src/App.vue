@@ -119,7 +119,7 @@ export default {
         this.resolve = resolve
       })
       this.userChoice = answer
-      this.close()
+      this.closePopupDialog()
     },
     closePopupDialog() {
       this.isOpenPopupDialog = false
