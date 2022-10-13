@@ -1,5 +1,11 @@
 # user-management-system
 
+## Version
+```
+node -v
+v16.16.0
+```
+
 ## Project setup
 ```
 yarn install
