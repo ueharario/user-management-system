@@ -1,5 +1,5 @@
 <template>
-    <div id="overlay" v-if="isOpenPopupDialog">
+    <div id="overlay" v-if="showDialog">
         <div id="content">
             <p class="message">{{ message }}</p>
             <div class="btn-container float-right">
@@ -13,18 +13,48 @@
 </template>
 
 <script>
+
+const _DialogUtil = () => {
+    let callbacks = []
+
+    const showDialog = () => {
+        callbacks.forEach(callback => callback(true))
+    }
+
+    const closeDialog = () => {
+        callbacks.forEach(callback => callback(false))
+    }
+
+    const getCallback = (callback) => {
+        callbacks.push(callback)
+    }
+
+    return {
+        showDialog,
+        closeDialog,
+        getCallback
+    }
+}
+
+export const DialogUtil = _DialogUtil()
+
 export default {
     data() {
         return {
             message: 'Confirmation',
-            isOpenPopupDialog: false,
+            showDialog: false,
             resolve: {},
             userChoice: false
         }
     },
+    mounted() {
+        DialogUtil.getCallback((value) => {
+            this.showDialog = value
+        })
+    },
     methods: {
         async someProcess() {
-            this.isOpenPopupDialog = true
+            this.showDialog = true
             const answer = await new Promise((resolve) => {
             this.resolve = resolve
             })
@@ -32,15 +62,13 @@ export default {
             this.closePopupDialog()
         },
         closePopupDialog() {
-            this.isOpenPopupDialog = false
+            this.showDialog = false
         },
         successConfirm() {
             this.resolve(true)
-            this.closePopupDialog()
         },
         cancelConfirm() {
             this.resolve(false)
-            this.closePopupDialog()
         }
     }
 }
