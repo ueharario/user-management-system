@@ -4,20 +4,20 @@
             <div class="card-text">
                 <div class="group-form">
                     <label>{{ TITLE.name }}</label>
-                    <InputText v-model="editUser.name" @blur="validate('name')" />
+                    <InputTextName v-model="editUser.name" :editUser="editUser" @blur="validate('name')" />
                     <p class="errors form-text" v-if="!!errors.name">{{ errors.name }}</p>
                 </div>
                 <div class="form-group">
                     <label>{{ TITLE.gender }}</label>
-                    <SelectItem v-model="editUser.gender" :options="GENDER_ARRAY" @blur="validate('gender')" />
+                    <SelectItem v-model="editUser.gender" :editUser="editUser" :options="GENDER_ARRAY" @blur="validate('gender')" />
                     <p class="errors form-text" v-if="!!errors.gender">{{ errors.gender }}</p>
                 </div>
                 <div class="form-group" v-if="isMale">
-                    <InputText placeholder="Male_Message" v-model="editUser.maleMsg" @blur="validate('maleMsg')" />
+                    <InputTextMaleMsg v-model="editUser.maleMsg" :editUser="editUser" @blur="validate('maleMsg')" />
                     <p class="errors form-text" v-if="!!errors.maleMsg">{{ errors.maleMsg }}</p>
                 </div>
                 <div class="form-group" v-if="isFemale">
-                    <InputText placeholder="Female_Message" v-model="editUser.femaleMsg" @blur="validate('femaleMsg')" />
+                    <InputTextFemaleMsg v-model="editUser.femaleMsg" :editUser="editUser" @blur="validate('femaleMsg')" />
                     <p class="errors form-text" v-if="!!errors.femaleMsg">{{ errors.femaleMsg }}</p>
                 </div>
                 <div class="form-group float-right">
@@ -31,8 +31,10 @@
 </template>
 
 <script>
-import InputText from '@/components/InputText.vue'
+import InputTextName from '@/components/InputTextName.vue'
 import SelectItem from '@/components/SelectItem.vue'
+import InputTextMaleMsg from '@/components/InputTextMaleMsg.vue'
+import InputTextFemaleMsg from '@/components/InputTextFemaleMsg.vue'
 import { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE } from '@/constants/USERS.js'
 import * as yup from "yup";
 
@@ -73,8 +75,10 @@ export default {
         }
     },
     components: {
-        InputText,
-        SelectItem
+        InputTextName,
+        SelectItem,
+        InputTextMaleMsg,
+        InputTextFemaleMsg
     },
     computed: {
         isMale() {
