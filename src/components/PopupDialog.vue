@@ -64,12 +64,10 @@ export default {
         successConfirm() {
             this.someProcess()
             this.resolve(true)
-            DialogUtil.closeDialog()
         },
         cancelConfirm() {
             this.someProcess()
             this.resolve(false)
-            DialogUtil.closeDialog()
         }
     }
 }
