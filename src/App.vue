@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" v-bind:key="user.id">
+          <tr v-for="user in $store.state.users" v-bind:key="user.id">
               <td class="col-md-5 align-middle">{{ user.name }}</td>
               <td class="col-md-5 align-middle">{{ getGenderLabel(user.gender) }}</td>
               <td class="col-md-1">
@@ -30,6 +30,7 @@
           </tr>
         </tbody>
       </table>
+      <div>{{ $store.state.message }}</div>
       <PopupDialog />
     </div>
   </div>
@@ -39,7 +40,7 @@
 import UserForm from '@/components/UserForm.vue'
 import PopupDialog from '@/components/PopupDialog.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
-import { ApiGetUserData } from '@/api/api.js'
+// import { ApiGetUserData } from '@/api/api.js'
 import IssueId from '@/utils/IssueId'
 
 export default {
@@ -47,7 +48,7 @@ export default {
     return {
       TITLE,
       user: {},
-      users: [],
+      // users: [],
       usersData: [],
       isShow: false,
       isEdit: true
@@ -58,9 +59,10 @@ export default {
     PopupDialog
   },
   async mounted() {
-    const { usersData } = await ApiGetUserData()
+    // const { usersData } = await ApiGetUserData()
+    const { usersData } = await this.$store.state.users
     this.users = usersData
-    this.sortItem()
+    // this.sortItem()
   },
   methods: {
     create() {
