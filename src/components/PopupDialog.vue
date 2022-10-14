@@ -43,7 +43,7 @@ export default {
         return {
             message: 'Confirmation',
             showDialog: false,
-            resolve: {},
+            resolve: () => {},
             userChoice: false
         }
     },
@@ -54,21 +54,22 @@ export default {
     },
     methods: {
         async someProcess() {
-            this.showDialog = true
+            DialogUtil.showDialog()
             const answer = await new Promise((resolve) => {
             this.resolve = resolve
             })
             this.userChoice = answer
-            this.closePopupDialog()
-        },
-        closePopupDialog() {
-            this.showDialog = false
+            DialogUtil.closeDialog()
         },
         successConfirm() {
+            this.someProcess()
             this.resolve(true)
+            DialogUtil.closeDialog()
         },
         cancelConfirm() {
+            this.someProcess()
             this.resolve(false)
+            DialogUtil.closeDialog()
         }
     }
 }
