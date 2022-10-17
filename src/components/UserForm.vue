@@ -31,10 +31,11 @@
 </template>
 
 <script>
-import InputTextName from '@/components/InputTextName.vue'
-import SelectItem from '@/components/SelectItem.vue'
-import InputTextMaleMsg from '@/components/InputTextMaleMsg.vue'
-import InputTextFemaleMsg from '@/components/InputTextFemaleMsg.vue'
+import InputTextName from '@/components/InputField/InputTextName.vue'
+import SelectItem from '@/components/InputField/SelectItem.vue'
+import InputTextMaleMsg from '@/components/InputField/InputTextMaleMsg.vue'
+import InputTextFemaleMsg from '@/components/InputField/InputTextFemaleMsg.vue'
+import { DialogUtil } from '@/components/PopupDialog.vue'
 import { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE } from '@/constants/USERS.js'
 import * as yup from "yup";
 
@@ -107,6 +108,7 @@ export default {
         close() {
             this.reset()
             this.$emit('close', false)
+            DialogUtil.showDialog()
         },
         reset() {
             this.editUser = DEFAULT_USER
