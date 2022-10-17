@@ -18,7 +18,7 @@
               <td class="col-md-5 align-middle">{{ user.name }}</td>
               <td class="col-md-5 align-middle">{{ getGenderLabel(user.gender) }}</td>
               <td class="col-md-1">
-                <button class="btn btn-outline-primary btn-sm" @click="edit(user.id)">
+                <button class="btn btn-outline-primary btn-sm" @click="update(user.id)">
                   {{ TITLE.edit }}
                 </button>
               </td>
@@ -40,7 +40,6 @@
 import UserForm from '@/components/UserForm.vue'
 import PopupDialog from '@/components/PopupDialog.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
-// import IssueId from '@/utils/IssueId'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -72,7 +71,7 @@ export default {
     },
 
     /** 編集モード */
-    edit(id) {
+    update(id) {
       this.isEdit = true
       this.user = this._users.find((v) => v.id === id)
       this.openUserForm()
