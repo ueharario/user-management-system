@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in $store.state.users" v-bind:key="user.id">
+          <tr v-for="user in _users" :key="user.id">
               <td class="col-md-5 align-middle">{{ user.name }}</td>
               <td class="col-md-5 align-middle">{{ getGenderLabel(user.gender) }}</td>
               <td class="col-md-1">
@@ -31,6 +31,7 @@
         </tbody>
       </table>
       <div>{{ $store.state.message }}</div>
+      <div>{{ $store.state.users }}</div>
       <PopupDialog />
     </div>
   </div>
@@ -40,15 +41,14 @@
 import UserForm from '@/components/UserForm.vue'
 import PopupDialog from '@/components/PopupDialog.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
-// import { ApiGetUserData } from '@/api/api.js'
 import IssueId from '@/utils/IssueId'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
     return {
       TITLE,
       user: {},
-      // users: [],
       usersData: [],
       isShow: false,
       isEdit: true
@@ -58,13 +58,14 @@ export default {
     UserForm,
     PopupDialog
   },
-  async mounted() {
-    // const { usersData } = await ApiGetUserData()
-    const { usersData } = await this.$store.state.users
-    this.users = usersData
-    // this.sortItem()
+  computed: {
+    ...mapGetters(['_users'])
+  },
+  created() {
+    this.fetchUsers()
   },
   methods: {
+    ...mapActions(['fetchUsers']),
     create() {
       this.isEdit = false
       this.openUserForm()
@@ -74,7 +75,7 @@ export default {
     },
     getGenderLabel(gender) {
       const targetGender = GENDER_ARRAY.find((v) => v.id === Number(gender))
-      return targetGender.label
+      return targetGender
     },
     newUser(user) {
       user.id = IssueId(this.users, user)
