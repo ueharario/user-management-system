@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container">
       <h2 class="text-center">{{ TITLE.title }}</h2>
-      <UserForm v-if="isShow" @new="newUser" @edit="editUser" @close="closeUserForm" :user="user" :isEdit="isEdit" />
+      <UserForm v-if="isShow" @new="newUser" @edit="updateUser" @close="closeUserForm" :user="user" :isEdit="isEdit" />
       <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
       <table class="table table-striped mt-2">
         <thead class="thead-dark">
@@ -40,7 +40,7 @@
 import UserForm from '@/components/UserForm.vue'
 import PopupDialog from '@/components/PopupDialog.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
-import IssueId from '@/utils/IssueId'
+// import IssueId from '@/utils/IssueId'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -78,7 +78,7 @@ export default {
     this.fetchUsers()
   },
   methods: {
-    ...mapActions(['fetchUsers', 'deleteUser']),
+    ...mapActions(['fetchUsers', 'updateUser', 'deleteUser']),
 
     /** 新規作成モード */
     create() {
@@ -93,20 +93,9 @@ export default {
       this.openUserForm()
     },
 
-    newUser(user) {
-      user.id = IssueId(this.users, user)
-      this.users.push(user)
-      this.sortItem()
-    },
-
-    editUser(user) {
-      this.users = this.users.filter((v) => v.id !== user.id)
-      this.users.push(user)
-      this.sortItem()
-    },
-
-    // deleteItem(id) {
-    //   this.users = this.users.filter((v) => v.id !== id )
+    // newUser(user) {
+    //   user.id = IssueId(this.users, user)
+    //   this.users.push(user)
     //   this.sortItem()
     // },
 
@@ -126,13 +115,13 @@ export default {
       this.isShow = isShow
       this.user = {}
       this.editIndex = DEFAULT_EDIT_INDEX
-      this.sortUser()
+      // this.sortUser()
     },
 
-    /** user を id 順に並び替える */
-    sortUser() {
-      this.users.sort((prev, nxt) => prev.id - nxt.id)
-    }
+    // /** user を id 順に並び替える */
+    // sortUser() {
+    //   this.users.sort((prev, nxt) => prev.id - nxt.id)
+    // }
   }
 }
 </script>

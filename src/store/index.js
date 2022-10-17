@@ -8,8 +8,11 @@ export default createStore({
     mutations: {
         SET_USERS:
             (state, users) => (state.users = users),
-        CREATE_USER:
-            (state, user) => state.users.unshift(user),
+        UPDATE_USER:
+            (state, user) => {
+                state.users = state.users.filter((v) => v.id !== user.id)
+                state.users.push(user)
+            },
         DELETE_USER:
             (state, id) => state.users = state.users.filter((v) => v.id !== id)
     },
@@ -21,8 +24,8 @@ export default createStore({
             })
             commit('SET_USERS', response)
         },
-        createUser({ commit }, user) {
-            commit('CREATE_USER', user)
+        updateUser({ commit }, user) {
+            commit('UPDATE_USER', user)
         },
         deleteUser({ commit }, id) {
             commit('DELETE_USER', id)
