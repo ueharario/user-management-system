@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container">
       <h2 class="text-center">{{ TITLE.title }}</h2>
-      <UserForm v-if="isShow" @new="newUser" @edit="updateUser" @close="closeUserForm" :user="user" :isEdit="isEdit" />
+      <UserForm v-if="isShow" @new="createUser" @edit="updateUser" @close="closeUserForm" :user="user" :isEdit="isEdit" />
       <button class="btn btn-outline-success btn-sm my-2 float-right" @click="create">{{ TITLE.create }}</button>
       <table class="table table-striped mt-2">
         <thead class="thead-dark">
@@ -78,7 +78,7 @@ export default {
     this.fetchUsers()
   },
   methods: {
-    ...mapActions(['fetchUsers', 'updateUser', 'deleteUser']),
+    ...mapActions(['fetchUsers', 'createUser', 'updateUser', 'deleteUser']),
 
     /** 新規作成モード */
     create() {
@@ -92,12 +92,6 @@ export default {
       this.user = this._users.find((v) => v.id === id)
       this.openUserForm()
     },
-
-    // newUser(user) {
-    //   user.id = IssueId(this.users, user)
-    //   this.users.push(user)
-    //   this.sortItem()
-    // },
 
     /** 性別のラベル表示 */
     getGenderLabel(gender) {

@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import IssueId from '@/utils/IssueId.js'
 
 export default createStore({
     state: {
@@ -8,6 +9,11 @@ export default createStore({
     mutations: {
         SET_USERS:
             (state, users) => (state.users = users),
+        CREATE_USER:
+            (state, user) => {
+                user.id = IssueId(state.users, user)
+                state.users.push(user)
+            },
         UPDATE_USER:
             (state, user) => {
                 state.users = state.users.filter((v) => v.id !== user.id)
@@ -23,6 +29,9 @@ export default createStore({
                 .then(_response => resolve(_response.json()))
             })
             commit('SET_USERS', response)
+        },
+        createUser({ commit }, user) {
+            commit('CREATE_USER', user)
         },
         updateUser({ commit }, user) {
             commit('UPDATE_USER', user)
