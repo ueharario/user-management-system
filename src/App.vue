@@ -79,42 +79,58 @@ export default {
   },
   methods: {
     ...mapActions(['fetchUsers', 'deleteUser']),
+
+    /** 新規作成モード */
     create() {
       this.isEdit = false
       this.openUserForm()
     },
-    openUserForm() {
-      this.isShow = true
+
+    /** 編集モード */
+    edit(id) {
+      this.isEdit = true
+      this.user = this._users.find((v) => v.id === id)
+      this.openUserForm()
     },
-    getGenderLabel(gender) {
-      const targetGender = GENDER_ARRAY.find((v) => v.id === Number(gender))
-      return targetGender.label
-    },
+
     newUser(user) {
       user.id = IssueId(this.users, user)
       this.users.push(user)
       this.sortItem()
     },
+
     editUser(user) {
       this.users = this.users.filter((v) => v.id !== user.id)
       this.users.push(user)
       this.sortItem()
     },
-    closeUserForm(isShow) {
-      this.isShow = isShow
-      this.user = {}
-      this.editIndex = DEFAULT_EDIT_INDEX
-    },
-    edit(id) {
-      this.isEdit = true
-      this.user = this.users.find((v) => v.id === id)
-      this.openUserForm()
-    },
+
     // deleteItem(id) {
     //   this.users = this.users.filter((v) => v.id !== id )
     //   this.sortItem()
     // },
-    sortItem() {
+
+    /** 性別のラベル表示 */
+    getGenderLabel(gender) {
+      const targetGender = GENDER_ARRAY.find((v) => v.id === Number(gender))
+      return targetGender.label
+    },
+
+    /** UserForm を開く */
+    openUserForm() {
+      this.isShow = true
+    },
+
+    /** UserForm を閉じる */
+    closeUserForm(isShow) {
+      this.isShow = isShow
+      this.user = {}
+      this.editIndex = DEFAULT_EDIT_INDEX
+      this.sortUser()
+    },
+
+    /** user を id 順に並び替える */
+    sortUser() {
       this.users.sort((prev, nxt) => prev.id - nxt.id)
     }
   }

@@ -6,8 +6,12 @@ export default createStore({
         message: 'Store のお勉強'
     },
     mutations: {
-        setUsers: (state, users) => (state.users = users),
-        removeUser: (state, id) => state.users = state.users.filter((v) => v.id !== id)
+        SET_USERS:
+            (state, users) => (state.users = users),
+        CREATE_USER:
+            (state, user) => state.users.unshift(user),
+        DELETE_USER:
+            (state, id) => state.users = state.users.filter((v) => v.id !== id)
     },
     actions: {
         async fetchUsers({ commit }) {
@@ -15,10 +19,13 @@ export default createStore({
                 fetch('/json/data.json')
                 .then(_response => resolve(_response.json()))
             })
-            commit('setUsers', response)
+            commit('SET_USERS', response)
+        },
+        createUser({ commit }, user) {
+            commit('CREATE_USER', user)
         },
         deleteUser({ commit }, id) {
-            commit('removeUser', id)
+            commit('DELETE_USER', id)
         }
     },
     getters: {
