@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in _users" :key="user.id">
+          <tr v-for="user in users" :key="user.id">
               <td class="col-md-5 align-middle">{{ user.name }}</td>
               <td class="col-md-5 align-middle">{{ getGenderLabel(user.gender) }}</td>
               <td class="col-md-1">
@@ -31,7 +31,6 @@
         </tbody>
       </table>
       <div>{{ $store.state.message }}</div>
-      <div>{{ $store.state.users }}</div>
       <PopupDialog />
     </div>
   </div>
@@ -49,9 +48,9 @@ export default {
     return {
       TITLE,
       user: {},
-      usersData: [],
       isShow: false,
-      isEdit: true
+      isEdit: true,
+      users: []
     }
   },
   components: {
@@ -60,6 +59,20 @@ export default {
   },
   computed: {
     ...mapGetters(['_users'])
+  },
+  mounted() {
+    this.$watch(
+      () => this._users,
+      (newValue, oldValue) => {
+        if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+          this.users = { ...newValue }
+        }
+      },
+      {
+        immediate: true,
+        deep: true
+      }
+    )
   },
   created() {
     this.fetchUsers()
@@ -75,7 +88,7 @@ export default {
     },
     getGenderLabel(gender) {
       const targetGender = GENDER_ARRAY.find((v) => v.id === Number(gender))
-      return targetGender
+      return targetGender.label
     },
     newUser(user) {
       user.id = IssueId(this.users, user)
@@ -94,11 +107,11 @@ export default {
     },
     edit(id) {
       this.isEdit = true
-      this.user = this.users.find((v) => v.id === id)
+      this.user = this._users.find((v) => v.id === id)
       this.openUserForm()
     },
     deleteItem(id) {
-      this.users = this.users.filter((v) => v.id !== id )
+      this.users = this._users.filter((v) => v.id !== id )
       this.sortItem()
     },
     sortItem() {

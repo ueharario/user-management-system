@@ -2,11 +2,11 @@ import { createStore } from 'vuex'
 
 export default createStore({
     state: {
-        users: [],
+        userData: [],
         message: 'Store のお勉強'
     },
     mutations: {
-        setUsers: (state, users) => (state.users = users)
+        setUsers: (state, userData) => (state.userData = userData)
     },
     actions: {
         async fetchUsers({ commit }) {
@@ -18,6 +18,6 @@ export default createStore({
         }
     },
     getters: {
-        _users: (state) => state.users
+        _users: (state) => state.userData
     }
 })
