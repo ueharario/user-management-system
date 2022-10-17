@@ -2,11 +2,12 @@ import { createStore } from 'vuex'
 
 export default createStore({
     state: {
-        userData: [],
+        users: [],
         message: 'Store のお勉強'
     },
     mutations: {
-        setUsers: (state, userData) => (state.userData = userData)
+        setUsers: (state, users) => (state.users = users),
+        removeUser: (state, id) => state.users = state.users.filter((v) => v.id !== id)
     },
     actions: {
         async fetchUsers({ commit }) {
@@ -15,9 +16,12 @@ export default createStore({
                 .then(_response => resolve(_response.json()))
             })
             commit('setUsers', response)
+        },
+        deleteUser({ commit }, id) {
+            commit('removeUser', id)
         }
     },
     getters: {
-        _users: (state) => state.userData
+        _users: (state) => state.users
     }
 })

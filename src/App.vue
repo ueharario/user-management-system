@@ -23,7 +23,7 @@
                 </button>
               </td>
               <td class="col-md-1">
-                <button class="btn btn-outline-danger btn-sm" @click="deleteItem(user.id)">
+                <button class="btn btn-outline-danger btn-sm" @click="deleteUser(user.id)">
                   {{ TITLE.delete }}
                 </button>
               </td>
@@ -78,7 +78,7 @@ export default {
     this.fetchUsers()
   },
   methods: {
-    ...mapActions(['fetchUsers']),
+    ...mapActions(['fetchUsers', 'deleteUser']),
     create() {
       this.isEdit = false
       this.openUserForm()
@@ -107,13 +107,13 @@ export default {
     },
     edit(id) {
       this.isEdit = true
-      this.user = this._users.find((v) => v.id === id)
+      this.user = this.users.find((v) => v.id === id)
       this.openUserForm()
     },
-    deleteItem(id) {
-      this.users = this._users.filter((v) => v.id !== id )
-      this.sortItem()
-    },
+    // deleteItem(id) {
+    //   this.users = this.users.filter((v) => v.id !== id )
+    //   this.sortItem()
+    // },
     sortItem() {
       this.users.sort((prev, nxt) => prev.id - nxt.id)
     }
