@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" :key="user.id">
+          <tr v-for="user in _users" :key="user.id">
               <td class="col-md-5 align-middle">{{ user.name }}</td>
               <td class="col-md-5 align-middle">{{ getGenderLabel(user.gender) }}</td>
               <td class="col-md-1">
@@ -50,7 +50,6 @@ export default {
       user: {},
       isShow: false,
       isEdit: true,
-      users: []
     }
   },
   components: {
@@ -59,20 +58,6 @@ export default {
   },
   computed: {
     ...mapGetters(['_users'])
-  },
-  mounted() {
-    this.$watch(
-      () => this._users,
-      (newValue, oldValue) => {
-        if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
-          this.users = { ...newValue }
-        }
-      },
-      {
-        immediate: true,
-        deep: true
-      }
-    )
   },
   created() {
     this.fetchUsers()
@@ -109,13 +94,13 @@ export default {
       this.isShow = isShow
       this.user = {}
       this.editIndex = DEFAULT_EDIT_INDEX
-      // this.sortUser()
+      this.sortUser()
     },
 
-    // /** user を id 順に並び替える */
-    // sortUser() {
-    //   this.users.sort((prev, nxt) => prev.id - nxt.id)
-    // }
+    /** user を id 順に並び替える */
+    sortUser() {
+      this._users.sort((prev, nxt) => prev.id - nxt.id)
+    }
   }
 }
 </script>
