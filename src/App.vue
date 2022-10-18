@@ -30,7 +30,6 @@
           </tr>
         </tbody>
       </table>
-      <div>{{ $store.state.message }}</div>
       <PopupDialog />
     </div>
   </div>
@@ -56,14 +55,25 @@ export default {
     PopupDialog
   },
   computed: {
-    ...mapGetters(['_users'])
+    // _users() {
+    //   return this.$store.state.UsersApi.users
+    // }
+    ...mapGetters('UsersApi', ['_users'])
   },
-  created() {
-    this.fetchUsers()
+  async created() {
+    await this.$store.dispatch('UsersApi/fetchUsers')
+    // await this.$store.dispatch('UsersApi/createUser')
+    // await this.$store.dispatch('UsersApi/updateUser')
+    // await this.$store.dispatch('UsersApi/deleteUser')
+    // await this.fetchUsers()
   },
   methods: {
-    ...mapActions(['fetchUsers', 'createUser', 'updateUser', 'deleteUser']),
-
+    // ...mapActions(['fetchUsers', 'createUser', 'updateUser', 'deleteUser']),
+    ...mapActions({
+      createUser: 'UsersApi/createUser',
+      updateUser: 'UsersApi/updateUser',
+      deleteUser: 'UsersApi/deleteUser'
+    }),
     /** 新規作成モード */
     create() {
       this.isEdit = false
