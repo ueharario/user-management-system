@@ -39,7 +39,7 @@
 import UserForm from '@/components/UserForm.vue'
 import PopupDialog from '@/components/PopupDialog.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   data() {
@@ -55,10 +55,9 @@ export default {
     PopupDialog
   },
   computed: {
-    // _users() {
-    //   return this.$store.state.UsersApi.users
-    // }
-    ...mapGetters('UsersApi', ['_users'])
+    _users() {
+      return this.$store.state.UsersApi.users
+    }
   },
   async created() {
     await this.$store.dispatch('UsersApi/fetchUsers')
