@@ -39,7 +39,6 @@
 import UserForm from '@/components/UserForm.vue'
 import PopupDialog from '@/components/PopupDialog.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
-// import { mapActions } from 'vuex'
 
 export default {
   data() {
@@ -63,20 +62,16 @@ export default {
     await this.$store.dispatch('UsersApi/fetchUsers')
   },
   methods: {
-    createUser() {
-      this.$store.dispatch('UsersApi/createUser')
+    createUser(user) {
+      this.$store.dispatch('UsersApi/createUser', user)
     },
-    updateUser() {
-      this.$store.dispatch('UsersApi/updateUser')
+    updateUser(user) {
+      this.$store.dispatch('UsersApi/updateUser', user)
     },
-    deleteUser() {
-      this.$store.dispatch('UsersApi/deleteUser')
+    deleteUser(user) {
+      this.$store.dispatch('UsersApi/deleteUser', user)
     },
-    // ...mapActions({
-    //   createUser: 'UsersApi/createUser',
-    //   updateUser: 'UsersApi/updateUser',
-    //   deleteUser: 'UsersApi/deleteUser'
-    // }),
+
     /** 新規作成モード */
     create() {
       this.isEdit = false
