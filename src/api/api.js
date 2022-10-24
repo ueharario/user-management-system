@@ -11,10 +11,10 @@
 // }
 
 /** Promise を使った場合 */
-const ApiGetUserData = () => {
-    const promise = new Promise((resolve) => {
-        fetch('/json/data.json')
-            .then(response => resolve(response.json()))
+// const ApiGetUserData = () => {
+//     const promise = new Promise((resolve) => {
+//         fetch('/json/data.json')
+//             .then(response => resolve(response.json()))
             // .then(json => resolve(json.userData))
             // .catch((error) => { resolve(null); console.log(error) })
 
@@ -25,8 +25,8 @@ const ApiGetUserData = () => {
         /** 失敗の場合 */
         // fetch('json/error.json')
         //     .then(response => resolve(response.json()))
-    })
-    return promise
-}
+//     })
+//     return promise
+// }
 
-export { ApiGetUserData }
+// export { ApiGetUserData }
