@@ -108,12 +108,12 @@ export default {
         close() {
             this.reset()
             this.$emit('close', false)
-            DialogUtil.showDialog()
         },
         reset() {
             this.editUser = DEFAULT_USER
         },
         update() {
+            DialogUtil.showDialog()
             UserSchema.validate(this.editUser, { abortEarly: false })
             .then(() => {
                 this.$emit('edit', this.editUser)
@@ -126,6 +126,7 @@ export default {
             })
         },
         register() {
+            DialogUtil.showDialog()
             UserSchema.validate(this.editUser, { abortEarly: false })
             .then(() => {
                 this.$emit('new', this.editUser)

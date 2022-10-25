@@ -31,6 +31,7 @@
         </tbody>
       </table>
       <PopupDialog />
+      <!-- <PopupDialog @confirm="confirm" /> -->
     </div>
   </div>
 </template>
@@ -47,6 +48,7 @@ export default {
       user: {},
       isShow: false,
       isEdit: true,
+      // hoge: false
     }
   },
   components: {
@@ -62,6 +64,10 @@ export default {
     await this.$store.dispatch('UsersApi/fetchUsers')
   },
   methods: {
+    // confirm(value) {
+    //   this.hoge = value
+    //   console.log(this.hoge)
+    // },
     createUser(user) {
       this.$store.dispatch('UsersApi/createUser', user)
     },

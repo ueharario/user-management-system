@@ -59,15 +59,16 @@ export default {
             this.resolve = resolve
             })
             this.userChoice = answer
+            // this.$emit('confirm', this.userChoice)
             DialogUtil.closeDialog()
         },
         successConfirm() {
-            this.someProcess()
             this.resolve(true)
+            this.someProcess()
         },
         cancelConfirm() {
-            this.someProcess()
             this.resolve(false)
+            this.someProcess()
         }
     }
 }
