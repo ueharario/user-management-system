@@ -63,12 +63,12 @@ export default {
             DialogUtil.closeDialog()
         },
         successConfirm() {
-            this.resolve(true)
             this.someProcess()
+            this.resolve(true)
         },
         cancelConfirm() {
-            this.resolve(false)
             this.someProcess()
+            this.resolve(false)
         }
     }
 }
