@@ -24,6 +24,7 @@
                 <button class="btn btn-outline-warning btn-sm my-2" @click="update" v-if="isEdit">{{ TITLE.update }}</button>
                 <button class="btn btn-outline-warning btn-sm my-2" @click="register" v-else>{{ TITLE.register }}</button>
             </div>
+            <PopupDialog @confirm="confirm" />
         </div>
     </div>
 </template>
@@ -33,6 +34,7 @@ import InputTextName from '@/components/InputField/InputTextName.vue'
 import SelectItem from '@/components/InputField/SelectItem.vue'
 import InputTextMaleMsg from '@/components/InputField/InputTextMaleMsg.vue'
 import InputTextFemaleMsg from '@/components/InputField/InputTextFemaleMsg.vue'
+import PopupDialog from '@/components/PopupDialog.vue'
 import { DialogUtil } from '@/components/PopupDialog.vue'
 import { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE } from '@/constants/USERS.js'
 import * as yup from "yup";
@@ -70,14 +72,16 @@ export default {
             editUser: {},
             errors: DEFAULT_USER,
             GENDER_ARRAY,
-            TITLE
+            TITLE,
+            userChoice: false
         }
     },
     components: {
         InputTextName,
         SelectItem,
         InputTextMaleMsg,
-        InputTextFemaleMsg
+        InputTextFemaleMsg,
+        PopupDialog
     },
     computed: {
         isMale() {
@@ -85,7 +89,7 @@ export default {
         },
         isFemale() {
             return Number(this.editUser.gender) === GENDER.female.id
-        }
+        },
     },
     mounted() {
         this.$watch(
@@ -103,34 +107,43 @@ export default {
         )
     },
     methods: {
+        /** userChoice を取得 */
+        confirm(value) {
+            this.userChoice = value
+        },
+
         /** 新規作成モードで登録する */
         register() {
             DialogUtil.showDialog()
-            UserSchema.validate(this.editUser, { abortEarly: false })
-            .then(() => {
-                this.$emit('new', this.editUser)
-                this.close()
-            })
-            .catch((err) => {
-                err.inner.forEach((error) => {
-                    this.errors = { ...this.errors, [error.path]: error.message}
+            if (this.userChoice) {
+                UserSchema.validate(this.editUser, { abortEarly: false })
+                .then(() => {
+                    this.$emit('new', this.editUser)
+                    this.close()
                 })
-            })
+                .catch((err) => {
+                    err.inner.forEach((error) => {
+                        this.errors = { ...this.errors, [error.path]: error.message}
+                    })
+                })
+            }
         },
 
         /** 編集モードで更新する */
         update() {
             DialogUtil.showDialog()
-            UserSchema.validate(this.editUser, { abortEarly: false })
-            .then(() => {
-                this.$emit('edit', this.editUser)
-                this.close()
-            })
-            .catch((err) => {
-                err.inner.forEach((error) => {
-                    this.errors = { ...this.errors, [error.path]: error.message}
+            if (this.userChoice) {
+                UserSchema.validate(this.editUser, { abortEarly: false })
+                .then(() => {
+                    this.$emit('edit', this.editUser)
+                    this.close()
                 })
-            })
+                .catch((err) => {
+                    err.inner.forEach((error) => {
+                        this.errors = { ...this.errors, [error.path]: error.message}
+                    })
+                })
+            }
         },
 
         /** バリデーションチェック */
@@ -146,6 +159,7 @@ export default {
         close() {
             this.reset()
             this.$emit('close', false)
+            DialogUtil.showDialog()
         },
 
         /** 入力項目をリセットする */

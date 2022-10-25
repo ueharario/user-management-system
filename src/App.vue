@@ -30,14 +30,12 @@
           </tr>
         </tbody>
       </table>
-      <PopupDialog />
     </div>
   </div>
 </template>
 
 <script>
 import UserForm from '@/components/UserForm.vue'
-import PopupDialog from '@/components/PopupDialog.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 
 export default {
@@ -50,8 +48,7 @@ export default {
     }
   },
   components: {
-    UserForm,
-    PopupDialog
+    UserForm
   },
   computed: {
     _users() {

@@ -8,8 +8,8 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-outline-success mr-2" @click="someProcess">Process</button>
-    <span>{{ userChoice }}</span>
+    <!-- <button class="btn btn-outline-success mr-2" @click="someProcess">Process</button>
+    <span>{{ userChoice }}</span> -->
 </template>
 
 <script>
@@ -59,7 +59,7 @@ export default {
             this.resolve = resolve
             })
             this.userChoice = answer
-            // this.$emit('confirm', this.userChoice)
+            this.$emit('confirm', this.userChoice)
             DialogUtil.closeDialog()
         },
         successConfirm() {
