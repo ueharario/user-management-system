@@ -31,7 +31,6 @@
         </tbody>
       </table>
       <PopupDialog />
-      <!-- <PopupDialog @confirm="confirm" /> -->
     </div>
   </div>
 </template>
@@ -47,8 +46,7 @@ export default {
       TITLE,
       user: {},
       isShow: false,
-      isEdit: true,
-      // hoge: false
+      isEdit: true
     }
   },
   components: {
@@ -64,16 +62,17 @@ export default {
     await this.$store.dispatch('UsersApi/fetchUsers')
   },
   methods: {
-    // confirm(value) {
-    //   this.hoge = value
-    //   console.log(this.hoge)
-    // },
+    /** 新規作成 */
     createUser(user) {
       this.$store.dispatch('UsersApi/createUser', user)
     },
+
+    /** 編集 */
     updateUser(user) {
       this.$store.dispatch('UsersApi/updateUser', user)
     },
+
+    /** 削除 */
     deleteUser(user) {
       this.$store.dispatch('UsersApi/deleteUser', user)
     },
@@ -126,27 +125,5 @@ export default {
   color: #2c3e50;
   max-width: 600px;
   margin: 0 auto;
-}
-
-#overlay{
-  z-index:1;
-
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background-color:rgba(0,0,0,0.5);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#content{
-  z-index:2;
-  width:50%;
-  padding: 1em;
-  background:#fff;
 }
 </style>
