@@ -105,16 +105,32 @@ export default {
                 deep: true
             }
         )
+        this.$watch(
+            () => this.userChoice,
+            (newValue, oldValue) => {
+                if (newValue !== oldValue) {
+                    if (this.isEdit) this.successUpdate()
+                    else this.successRegister()
+                }
+            },
+            {
+                immediate: true,
+                deep: true
+            }
+        )
     },
     methods: {
         /** userChoice を取得 */
         confirm(value) {
             this.userChoice = value
+
         },
 
         /** 新規作成モードで登録する */
         register() {
             DialogUtil.showDialog()
+        },
+        successRegister() {
             if (this.userChoice) {
                 UserSchema.validate(this.editUser, { abortEarly: false })
                 .then(() => {
@@ -132,6 +148,8 @@ export default {
         /** 編集モードで更新する */
         update() {
             DialogUtil.showDialog()
+        },
+        successUpdate() {
             if (this.userChoice) {
                 UserSchema.validate(this.editUser, { abortEarly: false })
                 .then(() => {
