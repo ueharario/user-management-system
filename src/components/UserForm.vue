@@ -105,25 +105,16 @@ export default {
                 deep: true
             }
         )
-        this.$watch(
-            () => this.userChoice,
-            (newValue, oldValue) => {
-                if (newValue !== oldValue) {
-                    if (this.isEdit) this.successUpdate()
-                    else this.successRegister()
-                }
-            },
-            {
-                immediate: true,
-                deep: true
-            }
-        )
     },
     methods: {
-        /** userChoice を取得 */
+        /**
+         * 確認ダイアログでユーザ選択後、登録処理を行います。
+         * @param {boolean} value 確認ダイアログの結果です。
+         */
         confirm(value) {
             this.userChoice = value
-
+            if (this.isEdit) this.successUpdate()
+            else this.successRegister()
         },
 
         /** 新規作成モードで登録する */
@@ -177,7 +168,6 @@ export default {
         close() {
             this.reset()
             this.$emit('close', false)
-            DialogUtil.showDialog()
         },
 
         /** 入力項目をリセットする */
