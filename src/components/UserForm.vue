@@ -21,8 +21,8 @@
             </div>
             <div class="form-group float-right">
                 <button class="btn btn-outline-secondary btn-sm my-2 mr-2" @click="close">{{ TITLE.close }}</button>
-                <button class="btn btn-outline-warning btn-sm my-2" @click="update" v-if="isEdit">{{ TITLE.update }}</button>
-                <button class="btn btn-outline-warning btn-sm my-2" @click="register" v-else>{{ TITLE.register }}</button>
+                <button class="btn btn-outline-warning btn-sm my-2" @click="openConfirm" v-if="isEdit">{{ TITLE.update }}</button>
+                <button class="btn btn-outline-warning btn-sm my-2" @click="openConfirm" v-else>{{ TITLE.register }}</button>
             </div>
             <PopupDialog @confirm="confirm" />
         </div>
@@ -72,8 +72,7 @@ export default {
             editUser: {},
             errors: DEFAULT_USER,
             GENDER_ARRAY,
-            TITLE,
-            userChoice: false
+            TITLE
         }
     },
     components: {
@@ -89,7 +88,7 @@ export default {
         },
         isFemale() {
             return Number(this.editUser.gender) === GENDER.female.id
-        },
+        }
     },
     mounted() {
         this.$watch(
@@ -109,22 +108,26 @@ export default {
     methods: {
         /**
          * 確認ダイアログでユーザ選択後、登録処理を行います。
-         * @param {boolean} value 確認ダイアログの結果です。
+         * @param {boolean} userChoice 確認ダイアログの結果です。
          */
-        confirm(value) {
-            this.userChoice = value
-            if (this.isEdit) this.successUpdate()
-            else this.successRegister()
+        confirm(userChoice) {
+            if (this.isEdit) this.successUpdate(userChoice)
+            else this.successRegister(userChoice)
+        },
+
+        /**
+         * 確認ダイアログを開く
+         */
+        openConfirm() {
+            DialogUtil.showDialog()
         },
 
         /**
          * 新規作成モードで登録する
+         * @param {boolean} userChoice 確認ダイアログの結果です。
          */
-        register() {
-            DialogUtil.showDialog()
-        },
-        successRegister() {
-            if (this.userChoice) {
+        successRegister(userChoice) {
+            if (userChoice) {
                 UserSchema.validate(this.editUser, { abortEarly: false })
                 .then(() => {
                     this.$emit('new', this.editUser)
@@ -140,12 +143,10 @@ export default {
 
         /**
          * 編集モードで更新する
+         * @param {boolean} userChoice 確認ダイアログの結果です。
          */
-        update() {
-            DialogUtil.showDialog()
-        },
-        successUpdate() {
-            if (this.userChoice) {
+        successUpdate(userChoice) {
+            if (userChoice) {
                 UserSchema.validate(this.editUser, { abortEarly: false })
                 .then(() => {
                     this.$emit('edit', this.editUser)
