@@ -30,14 +30,12 @@
           </tr>
         </tbody>
       </table>
-      <PopupDialog />
     </div>
   </div>
 </template>
 
 <script>
 import UserForm from '@/components/UserForm.vue'
-import PopupDialog from '@/components/PopupDialog.vue'
 import { GENDER_ARRAY, TITLE, DEFAULT_EDIT_INDEX } from '@/constants/USERS.js'
 
 export default {
@@ -46,12 +44,11 @@ export default {
       TITLE,
       user: {},
       isShow: false,
-      isEdit: true,
+      isEdit: true
     }
   },
   components: {
-    UserForm,
-    PopupDialog
+    UserForm
   },
   computed: {
     _users() {
@@ -62,41 +59,68 @@ export default {
     await this.$store.dispatch('UsersApi/fetchUsers')
   },
   methods: {
+    /**
+     * 新規作成
+     * @param {object} user 登録するユーザ
+     */
     createUser(user) {
       this.$store.dispatch('UsersApi/createUser', user)
     },
+
+    /**
+     * 編集
+     * @param {object} user 更新するユーザ
+     */
     updateUser(user) {
       this.$store.dispatch('UsersApi/updateUser', user)
     },
+
+    /**
+     * 削除
+     * @param {object} user 削除するユーザ
+     */
     deleteUser(user) {
       this.$store.dispatch('UsersApi/deleteUser', user)
     },
 
-    /** 新規作成モード */
+    /**
+     * 新規作成モード
+     */
     create() {
       this.isEdit = false
       this.openUserForm()
     },
 
-    /** 編集モード */
+    /**
+     * 編集モード
+     * @param {number} id 選択したユーザの id
+     */
     update(id) {
       this.isEdit = true
       this.user = this._users.find((v) => v.id === id)
       this.openUserForm()
     },
 
-    /** 性別のラベル表示 */
+    /**
+     * 性別のラベル表示
+     * @param {number} gender 1: Male, 2: Female
+     */
     getGenderLabel(gender) {
       const targetGender = GENDER_ARRAY.find((v) => v.id === Number(gender))
       return targetGender.label
     },
 
-    /** UserForm を開く */
+    /**
+     * UserForm を開く
+     */
     openUserForm() {
       this.isShow = true
     },
 
-    /** UserForm を閉じる */
+    /**
+     * UserForm を閉じる
+     * @param {boolean} isShow コンポーネントんの表示切替
+     */
     closeUserForm(isShow) {
       this.isShow = isShow
       this.user = {}
@@ -104,7 +128,9 @@ export default {
       this.sortUser()
     },
 
-    /** user を id 順に並び替える */
+    /**
+     * user を id 順に並び替える
+     */
     sortUser() {
       this._users.sort((prev, nxt) => prev.id - nxt.id)
     }
@@ -120,27 +146,5 @@ export default {
   color: #2c3e50;
   max-width: 600px;
   margin: 0 auto;
-}
-
-#overlay{
-  z-index:1;
-
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background-color:rgba(0,0,0,0.5);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#content{
-  z-index:2;
-  width:50%;
-  padding: 1em;
-  background:#fff;
 }
 </style>

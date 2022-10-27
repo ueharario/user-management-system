@@ -1,31 +1,30 @@
 <template>
-    <div class="card">
-        <div class="card-body">
-            <div class="card-text">
-                <div class="group-form">
-                    <label>{{ TITLE.name }}</label>
-                    <InputTextName v-model="editUser.name" :editUser="editUser" @blur="validate('name')" />
-                    <p class="errors form-text" v-if="!!errors.name">{{ errors.name }}</p>
-                </div>
-                <div class="form-group">
-                    <label>{{ TITLE.gender }}</label>
-                    <SelectItem v-model="editUser.gender" :editUser="editUser" :options="GENDER_ARRAY" @blur="validate('gender')" />
-                    <p class="errors form-text" v-if="!!errors.gender">{{ errors.gender }}</p>
-                </div>
-                <div class="form-group" v-if="isMale">
-                    <InputTextMaleMsg v-model="editUser.maleMsg" :editUser="editUser" @blur="validate('maleMsg')" />
-                    <p class="errors form-text" v-if="!!errors.maleMsg">{{ errors.maleMsg }}</p>
-                </div>
-                <div class="form-group" v-if="isFemale">
-                    <InputTextFemaleMsg v-model="editUser.femaleMsg" :editUser="editUser" @blur="validate('femaleMsg')" />
-                    <p class="errors form-text" v-if="!!errors.femaleMsg">{{ errors.femaleMsg }}</p>
-                </div>
-                <div class="form-group float-right">
-                    <button class="btn btn-outline-secondary btn-sm my-2 mr-2" @click="close">{{ TITLE.close }}</button>
-                    <button class="btn btn-outline-warning btn-sm my-2" @click="update" v-if="isEdit">{{ TITLE.update }}</button>
-                    <button class="btn btn-outline-warning btn-sm my-2" @click="register" v-else>{{ TITLE.register }}</button>
-                </div>
+    <div id="overlay">
+        <div id="content">
+            <div class="group-form">
+                <label>{{ TITLE.name }}</label>
+                <InputTextName v-model="editUser.name" :editUser="editUser" @blur="validate('name')" />
+                <p class="errors form-text" v-if="!!errors.name">{{ errors.name }}</p>
             </div>
+            <div class="form-group">
+                <label>{{ TITLE.gender }}</label>
+                <SelectItem v-model="editUser.gender" :editUser="editUser" :options="GENDER_ARRAY" @blur="validate('gender')" />
+                <p class="errors form-text" v-if="!!errors.gender">{{ errors.gender }}</p>
+            </div>
+            <div class="form-group" v-if="isMale">
+                <InputTextMaleMsg v-model="editUser.maleMsg" :editUser="editUser" @blur="validate('maleMsg')" />
+                <p class="errors form-text" v-if="!!errors.maleMsg">{{ errors.maleMsg }}</p>
+            </div>
+            <div class="form-group" v-if="isFemale">
+                <InputTextFemaleMsg v-model="editUser.femaleMsg" :editUser="editUser" @blur="validate('femaleMsg')" />
+                <p class="errors form-text" v-if="!!errors.femaleMsg">{{ errors.femaleMsg }}</p>
+            </div>
+            <div class="form-group float-right">
+                <button class="btn btn-outline-secondary btn-sm my-2 mr-2" @click="close">{{ TITLE.close }}</button>
+                <button class="btn btn-outline-warning btn-sm my-2" @click="openConfirm" v-if="isEdit">{{ TITLE.update }}</button>
+                <button class="btn btn-outline-warning btn-sm my-2" @click="openConfirm" v-else>{{ TITLE.register }}</button>
+            </div>
+            <PopupDialog @confirm="confirm" />
         </div>
     </div>
 </template>
@@ -35,6 +34,7 @@ import InputTextName from '@/components/InputField/InputTextName.vue'
 import SelectItem from '@/components/InputField/SelectItem.vue'
 import InputTextMaleMsg from '@/components/InputField/InputTextMaleMsg.vue'
 import InputTextFemaleMsg from '@/components/InputField/InputTextFemaleMsg.vue'
+import PopupDialog from '@/components/PopupDialog.vue'
 import { DialogUtil } from '@/components/PopupDialog.vue'
 import { GENDER, GENDER_ARRAY, DEFAULT_USER, TITLE } from '@/constants/USERS.js'
 import * as yup from "yup";
@@ -79,7 +79,8 @@ export default {
         InputTextName,
         SelectItem,
         InputTextMaleMsg,
-        InputTextFemaleMsg
+        InputTextFemaleMsg,
+        PopupDialog
     },
     computed: {
         isMale() {
@@ -105,27 +106,30 @@ export default {
         )
     },
     methods: {
-        close() {
-            this.reset()
-            this.$emit('close', false)
+        /**
+         * 確認ダイアログでユーザ選択後、登録処理を行います。
+         * @param {boolean} userChoice 確認ダイアログの結果です。
+         */
+        confirm(userChoice) {
+            if (this.isEdit && userChoice) {
+                this.successUpdate()
+            }
+            else if (!this.isEdit && userChoice) {
+                this.successRegister()
+            }
+        },
+
+        /**
+         * 確認ダイアログを開く
+         */
+        openConfirm() {
             DialogUtil.showDialog()
         },
-        reset() {
-            this.editUser = DEFAULT_USER
-        },
-        update() {
-            UserSchema.validate(this.editUser, { abortEarly: false })
-            .then(() => {
-                this.$emit('edit', this.editUser)
-                this.close()
-            })
-            .catch((err) => {
-                err.inner.forEach((error) => {
-                    this.errors = { ...this.errors, [error.path]: error.message}
-                })
-            })
-        },
-        register() {
+
+        /**
+         * 新規作成モードで登録する
+         */
+        successRegister() {
             UserSchema.validate(this.editUser, { abortEarly: false })
             .then(() => {
                 this.$emit('new', this.editUser)
@@ -137,13 +141,49 @@ export default {
                 })
             })
         },
+
+        /**
+         * 編集モードで更新する
+         */
+        successUpdate() {
+            UserSchema.validate(this.editUser, { abortEarly: false })
+            .then(() => {
+                this.$emit('edit', this.editUser)
+                this.close()
+            })
+            .catch((err) => {
+                err.inner.forEach((error) => {
+                    this.errors = { ...this.errors, [error.path]: error.message}
+                })
+            })
+        },
+
+        /**
+         * バリデーションチェック
+         * @param {string} field 入力内容
+         */
         validate(field) {
             UserSchema.validateAt(field, this.editUser)
                 .then(() => (this.errors[field] = ''))
                 .catch((err) => {
                     this.errors[err.path] = err.message
                 })
-        }
+        },
+
+        /**
+         * ダイアログを閉じる
+         */
+        close() {
+            this.reset()
+            this.$emit('close', false)
+        },
+
+        /**
+         * 入力項目をリセットする
+         */
+        reset() {
+            this.editUser = DEFAULT_USER
+        },
     }
 }
 </script>
@@ -151,5 +191,27 @@ export default {
 <style scoped>
 .errors {
   color: red;
+}
+
+#overlay{
+  z-index:1;
+
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:rgba(0,0,0,0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#content{
+  z-index:2;
+  width:50%;
+  padding: 1em;
+  background:#fff;
 }
 </style>
