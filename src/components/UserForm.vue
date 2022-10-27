@@ -117,7 +117,9 @@ export default {
             else this.successRegister()
         },
 
-        /** 新規作成モードで登録する */
+        /**
+         * 新規作成モードで登録する
+         */
         register() {
             DialogUtil.showDialog()
         },
@@ -136,7 +138,9 @@ export default {
             }
         },
 
-        /** 編集モードで更新する */
+        /**
+         * 編集モードで更新する
+         */
         update() {
             DialogUtil.showDialog()
         },
@@ -155,7 +159,10 @@ export default {
             }
         },
 
-        /** バリデーションチェック */
+        /**
+         * バリデーションチェック
+         * @param {string} field 入力内容
+         */
         validate(field) {
             UserSchema.validateAt(field, this.editUser)
                 .then(() => (this.errors[field] = ''))
@@ -164,13 +171,17 @@ export default {
                 })
         },
 
-        /** ダイアログを閉じる */
+        /**
+         * ダイアログを閉じる
+         */
         close() {
             this.reset()
             this.$emit('close', false)
         },
 
-        /** 入力項目をリセットする */
+        /**
+         * 入力項目をリセットする
+         */
         reset() {
             this.editUser = DEFAULT_USER
         },
