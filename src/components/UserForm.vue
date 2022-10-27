@@ -111,8 +111,12 @@ export default {
          * @param {boolean} userChoice 確認ダイアログの結果です。
          */
         confirm(userChoice) {
-            if (this.isEdit) this.successUpdate(userChoice)
-            else this.successRegister(userChoice)
+            if (this.isEdit && userChoice) {
+                this.successUpdate()
+            }
+            else if (!this.isEdit && userChoice) {
+                this.successRegister()
+            }
         },
 
         /**
@@ -124,40 +128,34 @@ export default {
 
         /**
          * 新規作成モードで登録する
-         * @param {boolean} userChoice 確認ダイアログの結果です。
          */
-        successRegister(userChoice) {
-            if (userChoice) {
-                UserSchema.validate(this.editUser, { abortEarly: false })
-                .then(() => {
-                    this.$emit('new', this.editUser)
-                    this.close()
+        successRegister() {
+            UserSchema.validate(this.editUser, { abortEarly: false })
+            .then(() => {
+                this.$emit('new', this.editUser)
+                this.close()
+            })
+            .catch((err) => {
+                err.inner.forEach((error) => {
+                    this.errors = { ...this.errors, [error.path]: error.message}
                 })
-                .catch((err) => {
-                    err.inner.forEach((error) => {
-                        this.errors = { ...this.errors, [error.path]: error.message}
-                    })
-                })
-            }
+            })
         },
 
         /**
          * 編集モードで更新する
-         * @param {boolean} userChoice 確認ダイアログの結果です。
          */
-        successUpdate(userChoice) {
-            if (userChoice) {
-                UserSchema.validate(this.editUser, { abortEarly: false })
-                .then(() => {
-                    this.$emit('edit', this.editUser)
-                    this.close()
+        successUpdate() {
+            UserSchema.validate(this.editUser, { abortEarly: false })
+            .then(() => {
+                this.$emit('edit', this.editUser)
+                this.close()
+            })
+            .catch((err) => {
+                err.inner.forEach((error) => {
+                    this.errors = { ...this.errors, [error.path]: error.message}
                 })
-                .catch((err) => {
-                    err.inner.forEach((error) => {
-                        this.errors = { ...this.errors, [error.path]: error.message}
-                    })
-                })
-            }
+            })
         },
 
         /**
